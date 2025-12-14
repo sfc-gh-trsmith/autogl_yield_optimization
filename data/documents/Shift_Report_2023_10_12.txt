@@ -1,0 +1,94 @@
+================================================================================
+TERAFIELD RESOURCES - DAILY SHIFT HANDOVER REPORT
+================================================================================
+
+Date: October 12, 2023
+Shift: Day Shift (06:00 - 18:00)
+Operator: Mike Johnson
+Relief Operator: Sarah Chen
+Weather: Clear, 78°F
+
+================================================================================
+FACILITY STATUS SUMMARY
+================================================================================
+
+Midland Hub Status: OPERATIONAL
+Overall Production: 12,450 BOPD (97% of target)
+
+Equipment Status:
+- TF-V-204: OPERATIONAL (watching closely - see notes)
+- TF-V-205: OPERATIONAL  
+- TF-H-301: OPERATIONAL
+- TF-COMP-LP-A: OPERATIONAL (vibration within limits)
+- TF-MID-HUB: OPERATIONAL
+
+================================================================================
+OPERATOR NOTES - IMPORTANT
+================================================================================
+
+1. VALVE ISSUE - TF-V-204
+   Operator Note: Bypass valve on V-204 sticks when pressure exceeds 550. 
+   Recommend replacement. Had to manually cycle it twice this shift when 
+   upstream pressure spiked to 560 PSI around 14:30.
+   
+   Action: Called maintenance, they will inspect during next turnaround.
+   Workaround: Reduced choke on northern wells to keep inlet < 540 PSI.
+
+2. COMPRESSOR VIBRATION
+   TF-COMP-LP-A showing 0.35 in/sec vibration on bearing #2.
+   Within limits (0.5 max) but trending up from 0.28 last week.
+   Recommend predictive maintenance check within 2 weeks.
+
+3. NORTHERN GATHERING LINE
+   Noticed slight pressure buildup in 6" line from northern leases.
+   Possible scale accumulation. Added to pigging schedule for next month.
+
+================================================================================
+PRODUCTION DATA
+================================================================================
+
+Well Pad        Status      Oil (BOPD)    Gas (MCFD)    Water (BWPD)
+--------        ------      ----------    ----------    -----------
+North Lease 1   Producing   2,100         4,200         850
+North Lease 2   Producing   1,850         3,700         720
+North Lease 3   Producing   2,400         4,800         1,100
+East Block      Producing   3,200         6,400         1,450
+South Wells     Producing   2,900         5,800         980
+--------        ------      ----------    ----------    -----------
+TOTAL                       12,450        24,900        5,100
+
+================================================================================
+SAFETY & ENVIRONMENTAL
+================================================================================
+
+- No safety incidents
+- No environmental releases
+- Daily H2S checks: All clear
+- Fire extinguisher inspection: Complete
+
+================================================================================
+MAINTENANCE REQUESTS SUBMITTED
+================================================================================
+
+1. MT-2023-4421 (OPEN): V-204 bypass valve replacement - HIGH PRIORITY
+2. MT-2023-4456 (NEW): TF-COMP-LP-A bearing inspection
+3. MT-2023-4457 (NEW): Northern line pigging
+
+================================================================================
+ITEMS FOR INCOMING SHIFT
+================================================================================
+
+1. Monitor V-204 inlet pressure closely - keep below 540 PSI
+2. Check compressor vibration readings at 20:00 and 02:00
+3. Expect tanker truck at 22:00 for water disposal
+4. Engineering team visiting tomorrow AM for integration assessment
+
+================================================================================
+SHIFT HANDOVER ACKNOWLEDGMENT
+================================================================================
+
+Outgoing Operator: Mike Johnson      Signature: MJ     Time: 17:45
+Incoming Operator: Sarah Chen        Signature: SC     Time: 17:45
+
+================================================================================
+

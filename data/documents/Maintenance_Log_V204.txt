@@ -1,0 +1,99 @@
+================================================================================
+TERAFIELD RESOURCES - EQUIPMENT MAINTENANCE LOG
+================================================================================
+
+Equipment Tag: TF-V-204
+Equipment Type: 2-Phase Vertical Separator
+Location: Midland Hub
+Manufacturer: Natco
+Serial Number: NTC-2014-V-88421
+Install Date: June 10, 2014
+
+================================================================================
+MAINTENANCE HISTORY
+================================================================================
+
+DATE        TYPE            DESCRIPTION                         TECHNICIAN
+----        ----            -----------                         ----------
+
+2023-10-15  CORRECTIVE      Bypass valve cycling - temporary    R. Garcia
+                            fix applied. Valve sticking above
+                            550 PSI. Full replacement scheduled.
+                            
+2023-09-01  PREVENTIVE      Annual inspection complete.          M. Williams
+                            Internals in good condition.
+                            Corrosion rate: 2.1 mpy (acceptable).
+                            Relief valve tested - passed.
+                            
+2023-06-15  CORRECTIVE      Level transmitter replaced.          J. Martinez
+                            LT-204A showing erratic readings.
+                            Calibrated new unit to spec.
+                            
+2023-03-20  PREVENTIVE      Pressure safety valve (PSV)          External
+                            recertification. Set point verified
+                            at 600 PSIG. Certificate #PSV-2023-441.
+                            
+2022-09-01  PREVENTIVE      Annual inspection complete.          T. Brown
+                            Minor pitting on inlet nozzle.
+                            Recommend monitoring.
+                            
+2022-04-10  CORRECTIVE      Dump valve actuator replaced.        R. Garcia
+                            Sluggish operation reported.
+                            
+2021-09-01  PREVENTIVE      Annual inspection complete.          M. Williams
+                            All parameters within limits.
+                            
+2021-02-28  CORRECTIVE      Sight glass replaced - cracked.      J. Martinez
+                            Root cause: thermal shock.
+                            
+2020-09-01  PREVENTIVE      Annual inspection complete.          T. Brown
+
+================================================================================
+CRITICAL EQUIPMENT PARAMETERS
+================================================================================
+
+Parameter                   Design Value    Current Limit   Last Reading
+---------                   ------------    -------------   ------------
+Max Allowable WP (MAWP)     600 PSIG        600 PSIG        N/A
+Operating Pressure          400-550 PSIG    550 PSIG MAX    512 PSIG
+Operating Temperature       100-150°F       150°F MAX       128°F
+Corrosion Rate             <5 mpy          <5 mpy          2.1 mpy
+Wall Thickness (min)        0.375"          0.312"          0.358"
+
+================================================================================
+OUTSTANDING WORK ORDERS
+================================================================================
+
+WO Number       Priority    Description                     Due Date
+---------       --------    -----------                     --------
+MT-2023-4421    HIGH        Bypass valve replacement        2023-11-15
+                            Valve sticks above 550 PSI.
+                            SAFETY CONCERN - expedite.
+                            
+MT-2023-4489    MEDIUM      Inlet nozzle inspection         2024-03-01
+                            Follow-up on pitting noted
+                            in 2022 inspection.
+
+================================================================================
+NOTES
+================================================================================
+
+2023-10-12: Multiple reports of valve sticking this week. Operations reduced
+upstream choke to maintain inlet < 540 PSI as workaround. Engineering
+evaluating if this separator can handle increased flow from upcoming
+SnowCore integration. CRITICAL: Do not exceed 550 PSI inlet until
+valve replacement complete.
+
+2022-09-01: Pitting on inlet nozzle is minor but tracking. If corrosion rate
+increases, may need to de-rate MAWP or schedule repair weld.
+
+================================================================================
+NEXT SCHEDULED MAINTENANCE
+================================================================================
+
+Date: September 2024
+Type: Annual Preventive Inspection
+Scope: Full internal inspection, NDT of nozzles, PSV recertification
+
+================================================================================
+

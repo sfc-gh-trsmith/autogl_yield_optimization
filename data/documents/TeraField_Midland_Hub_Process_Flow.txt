@@ -1,0 +1,77 @@
+================================================================================
+TERAFIELD RESOURCES - MIDLAND HUB PROCESS FLOW DIAGRAM
+Document ID: PID-TF-MID-001
+Revision: 3.2
+Last Updated: 2019-06-15
+================================================================================
+
+FACILITY: Midland Central Gathering Hub
+LOCATION: Section 14, Block 42, T1S, R34E, Midland County, TX
+COORDINATES: 31.78°N, 101.88°W
+
+================================================================================
+EQUIPMENT SCHEDULE
+================================================================================
+
+TAG ID          DESCRIPTION                     DESIGN CONDITIONS
+------          -----------                     -----------------
+TF-V-204        2-Phase Vertical Separator      MAWP: 600 PSIG
+                Manufacturer: Natco             Design Temp: 150°F
+                Capacity: 5,000 BOPD            Year Installed: 2014
+                
+TF-V-205        2-Phase Vertical Separator      MAWP: 650 PSIG
+                Manufacturer: Natco             Design Temp: 150°F
+                Capacity: 4,500 BOPD            Year Installed: 2015
+
+TF-H-301        2-Phase Horizontal Separator    MAWP: 720 PSIG
+                Manufacturer: Cameron           Design Temp: 175°F
+                Capacity: 8,000 BOPD            Year Installed: 2016
+
+TF-VALVE-101    Pressure Control Valve          Rating: 550 PSI
+                Manufacturer: Fisher            Type: Globe
+                Size: 4"                        Cv: 125
+
+TF-VALVE-102    Safety Relief Valve             Set Point: 600 PSI
+                Manufacturer: Fisher            Type: PSV
+                Size: 3"                        
+
+TF-COMP-LP-A    Low Pressure Compressor         Max Discharge: 500 PSIG
+                Manufacturer: Ingersoll Rand    HP: 350
+                Year Installed: 2013
+
+================================================================================
+PROCESS NOTES
+================================================================================
+
+1. V-204 receives production from northern lease areas via 6" gathering line
+   
+2. CRITICAL: V-204 MAWP of 600 PSIG is the limiting factor for upstream
+   pressure. Upstream facilities must not exceed 550 PSIG inlet pressure
+   to maintain 50 PSI safety margin.
+
+3. Bypass valve on V-204 has been reported to stick when pressure exceeds
+   550 PSI. Maintenance ticket MT-2023-4421 pending replacement.
+
+4. All flow from separators routes through TF-MID-HUB before compression
+   at TF-COMP-LP-A.
+
+================================================================================
+REVISION HISTORY
+================================================================================
+
+Rev 3.2 (2019-06-15): Updated V-204 capacity after debottleneck
+Rev 3.1 (2018-03-20): Added TF-VALVE-102 PSV
+Rev 3.0 (2017-01-10): Major revision for Hub expansion
+Rev 2.0 (2015-08-22): Added V-205
+Rev 1.0 (2014-06-10): Initial issue
+
+================================================================================
+ENGINEERING APPROVAL
+================================================================================
+
+Prepared By: J. Martinez, Process Engineer
+Reviewed By: R. Thompson, Senior Engineer  
+Approved By: M. Davis, Facilities Manager
+
+================================================================================
+
