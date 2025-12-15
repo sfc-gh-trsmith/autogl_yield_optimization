@@ -2,12 +2,14 @@
 -- 04_semantic_view.sql - Deploy Cortex Analyst Semantic View
 -- ============================================================================
 -- Creates semantic view from YAML definition for natural language SQL queries
+-- 
+-- Runs as: AUTOGL_YIELD_OPTIMIZATION_ROLE (project role)
 -- ============================================================================
 
-USE ROLE ACCOUNTADMIN;
+USE ROLE AUTOGL_YIELD_OPTIMIZATION_ROLE;
 USE DATABASE AUTOGL_YIELD_OPTIMIZATION;
-USE SCHEMA PUBLIC;
-USE WAREHOUSE AUTOGL_WH;
+USE SCHEMA AUTOGL_YIELD_OPTIMIZATION;
+USE WAREHOUSE AUTOGL_YIELD_OPTIMIZATION_WH;
 
 -- ============================================================================
 -- Deploy Semantic View from YAML
@@ -15,9 +17,9 @@ USE WAREHOUSE AUTOGL_WH;
 -- The YAML file is uploaded to stage and deployed using SYSTEM$CREATE_SEMANTIC_VIEW_FROM_YAML
 
 CALL SYSTEM$CREATE_SEMANTIC_VIEW_FROM_YAML(
-  'AUTOGL_YIELD_OPTIMIZATION.PUBLIC',
+  'AUTOGL_YIELD_OPTIMIZATION.AUTOGL_YIELD_OPTIMIZATION',
 $$
-name: PERMIAN_ANALYTICS_VIEW
+name: AUTOGL_YIELD_OPTIMIZATION_ANALYTICS_VIEW
 description: >
   Semantic view for analyzing SnowCore and TeraField asset performance,
   production metrics, and operational KPIs across the Permian Basin gathering network.
@@ -28,7 +30,7 @@ tables:
     description: Daily aggregated SCADA metrics by asset
     base_table:
       database: AUTOGL_YIELD_OPTIMIZATION
-      schema: PUBLIC
+      schema: AUTOGL_YIELD_OPTIMIZATION
       table: SCADA_AGGREGATES
     
     dimensions:
@@ -93,6 +95,32 @@ tables:
           - production rate
           - BOPD
           
+      - name: avg_gas_flow_mcfd
+        description: Average gas flow in thousand cubic feet per day
+        expr: AVG(AVG_GAS_FLOW_MCFD)
+        data_type: NUMBER
+        synonyms:
+          - gas flow
+          - gas production
+          - MCFD
+          
+      - name: total_gas_mcf
+        description: Total gas produced in thousand cubic feet
+        expr: SUM(TOTAL_GAS_MCF)
+        data_type: NUMBER
+        synonyms:
+          - gas volume
+          - total gas
+          
+      - name: gas_oil_ratio
+        description: Gas-Oil Ratio in standard cubic feet per barrel (SCF/BBL)
+        expr: AVG(GAS_OIL_RATIO)
+        data_type: NUMBER
+        synonyms:
+          - GOR
+          - gas ratio
+          - SCF per BBL
+          
       - name: max_pressure_psi
         description: Maximum pressure reading in PSI
         expr: MAX(MAX_PRESSURE_PSI)
@@ -148,7 +176,7 @@ tables:
     description: Master registry of all physical equipment
     base_table:
       database: AUTOGL_YIELD_OPTIMIZATION
-      schema: PUBLIC
+      schema: AUTOGL_YIELD_OPTIMIZATION
       table: ASSET_MASTER
     
     dimensions:
@@ -205,7 +233,7 @@ tables:
     description: ML model predictions for anomalies and link discovery
     base_table:
       database: AUTOGL_YIELD_OPTIMIZATION
-      schema: PUBLIC
+      schema: AUTOGL_YIELD_OPTIMIZATION
       table: GRAPH_PREDICTIONS
     
     dimensions:
@@ -254,13 +282,12 @@ $$
 -- Verify Semantic View
 -- ============================================================================
 
-SHOW VIEWS LIKE 'PERMIAN_ANALYTICS_VIEW' IN SCHEMA AUTOGL_YIELD_OPTIMIZATION.PUBLIC;
+SHOW VIEWS LIKE 'AUTOGL_YIELD_OPTIMIZATION_ANALYTICS_VIEW' IN SCHEMA AUTOGL_YIELD_OPTIMIZATION.AUTOGL_YIELD_OPTIMIZATION;
 
 -- Test with Cortex Analyst
 SELECT SNOWFLAKE.CORTEX.COMPLETE(
     'mistral-large2',
-    'Based on the PERMIAN_ANALYTICS_VIEW semantic model, generate a SQL query to: Compare downtime between SNOWCORE and TERAFIELD assets. Return only the SQL, no explanation.'
+    'Based on the AUTOGL_YIELD_OPTIMIZATION_ANALYTICS_VIEW semantic model, generate a SQL query to: Compare downtime between SNOWCORE and TERAFIELD assets. Return only the SQL, no explanation.'
 ) AS GENERATED_SQL;
 
 SELECT 'Semantic view deployed successfully!' AS STATUS;
-

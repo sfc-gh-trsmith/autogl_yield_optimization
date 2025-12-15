@@ -1,0 +1,95 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 400">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0f172a"/>
+      <stop offset="100%" style="stop-color:#1e293b"/>
+    </linearGradient>
+    <linearGradient id="snowcoreGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0ea5e9"/>
+      <stop offset="100%" style="stop-color:#0284c7"/>
+    </linearGradient>
+    <linearGradient id="terafieldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#f43f5e"/>
+      <stop offset="100%" style="stop-color:#e11d48"/>
+    </linearGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="800" height="400" fill="url(#bgGrad)" rx="12"/>
+  
+  <!-- Title -->
+  <text x="400" y="40" text-anchor="middle" fill="#e2e8f0" font-family="system-ui" font-size="20" font-weight="600">The Post-Merger Integration Challenge</text>
+  
+  <!-- SnowCore Cluster (Left) -->
+  <g transform="translate(100, 120)">
+    <rect x="0" y="0" width="200" height="220" rx="12" fill="#1e293b" stroke="#0ea5e9" stroke-width="2"/>
+    <text x="100" y="30" text-anchor="middle" fill="#0ea5e9" font-family="system-ui" font-size="16" font-weight="600">SnowCore Energy</text>
+    <text x="100" y="50" text-anchor="middle" fill="#64748b" font-family="system-ui" font-size="11">Modern Infrastructure (2020-2023)</text>
+    
+    <!-- SCADA -->
+    <rect x="20" y="70" width="160" height="35" rx="6" fill="#0ea5e920" stroke="#0ea5e9" stroke-width="1"/>
+    <text x="100" y="92" text-anchor="middle" fill="#0ea5e9" font-family="system-ui" font-size="12">OSIsoft PI Historian</text>
+    
+    <!-- ERP -->
+    <rect x="20" y="115" width="160" height="35" rx="6" fill="#0ea5e920" stroke="#0ea5e9" stroke-width="1"/>
+    <text x="100" y="137" text-anchor="middle" fill="#0ea5e9" font-family="system-ui" font-size="12">SAP S/4HANA ERP</text>
+    
+    <!-- Tags -->
+    <rect x="20" y="160" width="160" height="45" rx="6" fill="#0ea5e910" stroke="#334155" stroke-width="1"/>
+    <text x="100" y="180" text-anchor="middle" fill="#94a3b8" font-family="monospace" font-size="9">DELAWARE/PAD_42/</text>
+    <text x="100" y="195" text-anchor="middle" fill="#94a3b8" font-family="monospace" font-size="9">SEP_V101/PRESS_PV</text>
+  </g>
+  
+  <!-- Gap / Barrier -->
+  <g transform="translate(330, 140)">
+    <rect x="0" y="0" width="140" height="180" rx="8" fill="#45000020" stroke="#ef4444" stroke-width="2" stroke-dasharray="8,4"/>
+    <text x="70" y="30" text-anchor="middle" fill="#ef4444" font-family="system-ui" font-size="14" font-weight="600">⚠️ THE GAP</text>
+    
+    <text x="70" y="60" text-anchor="middle" fill="#94a3b8" font-family="system-ui" font-size="10">Incompatible</text>
+    <text x="70" y="75" text-anchor="middle" fill="#94a3b8" font-family="system-ui" font-size="10">SCADA Systems</text>
+    
+    <line x1="20" y1="90" x2="120" y2="90" stroke="#334155" stroke-width="1"/>
+    
+    <text x="70" y="110" text-anchor="middle" fill="#94a3b8" font-family="system-ui" font-size="10">Different Tag</text>
+    <text x="70" y="125" text-anchor="middle" fill="#94a3b8" font-family="system-ui" font-size="10">Conventions</text>
+    
+    <line x1="20" y1="140" x2="120" y2="140" stroke="#334155" stroke-width="1"/>
+    
+    <text x="70" y="160" text-anchor="middle" fill="#94a3b8" font-family="system-ui" font-size="10">Missing Cross-</text>
+    <text x="70" y="175" text-anchor="middle" fill="#94a3b8" font-family="system-ui" font-size="10">Network Visibility</text>
+  </g>
+  
+  <!-- TeraField Cluster (Right) -->
+  <g transform="translate(500, 120)">
+    <rect x="0" y="0" width="200" height="220" rx="12" fill="#1e293b" stroke="#f43f5e" stroke-width="2"/>
+    <text x="100" y="30" text-anchor="middle" fill="#f43f5e" font-family="system-ui" font-size="16" font-weight="600">TeraField Resources</text>
+    <text x="100" y="50" text-anchor="middle" fill="#64748b" font-family="system-ui" font-size="11">Legacy Infrastructure (2011-2017)</text>
+    
+    <!-- SCADA -->
+    <rect x="20" y="70" width="160" height="35" rx="6" fill="#f43f5e20" stroke="#f43f5e" stroke-width="1"/>
+    <text x="100" y="92" text-anchor="middle" fill="#f43f5e" font-family="system-ui" font-size="12">CygNet / Rockwell</text>
+    
+    <!-- ERP -->
+    <rect x="20" y="115" width="160" height="35" rx="6" fill="#f43f5e20" stroke="#f43f5e" stroke-width="1"/>
+    <text x="100" y="137" text-anchor="middle" fill="#f43f5e" font-family="system-ui" font-size="12">IBM Maximo Legacy</text>
+    
+    <!-- Tags -->
+    <rect x="20" y="160" width="160" height="45" rx="6" fill="#f43f5e10" stroke="#334155" stroke-width="1"/>
+    <text x="100" y="182" text-anchor="middle" fill="#94a3b8" font-family="monospace" font-size="10">TF_MID_HUB_V204_P</text>
+    <text x="100" y="197" text-anchor="middle" fill="#64748b" font-family="system-ui" font-size="9">(Cryptic / Flat IDs)</text>
+  </g>
+  
+  <!-- Bottom Pain Point -->
+  <g transform="translate(200, 360)">
+    <rect x="0" y="0" width="400" height="30" rx="6" fill="#ef444420" stroke="#ef4444" stroke-width="1"/>
+    <text x="200" y="20" text-anchor="middle" fill="#f87171" font-family="system-ui" font-size="12">💥 Hidden pressure cascades cause unplanned deferment and SLA penalties</text>
+  </g>
+</svg>
+

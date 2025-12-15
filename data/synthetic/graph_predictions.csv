@@ -1,0 +1,23 @@
+PREDICTION_TYPE,ENTITY_ID,RELATED_ENTITY_ID,SCORE,CONFIDENCE,EXPLANATION,PREDICTION_TIMESTAMP
+NODE_ANOMALY,SC-PAD-42,,0.055,0.906,Pressure anomaly risk for SC-PAD-42,2025-12-14 17:54:55
+NODE_ANOMALY,SC-PAD-43,,0.089,0.966,Pressure anomaly risk for SC-PAD-43,2025-12-14 17:54:55
+NODE_ANOMALY,SC-PAD-44,,0.063,0.954,Pressure anomaly risk for SC-PAD-44,2025-12-14 17:54:55
+NODE_ANOMALY,SC-PAD-45,,0.116,0.97,Pressure anomaly risk for SC-PAD-45,2025-12-14 17:54:55
+NODE_ANOMALY,SC-SEP-101,,0.475,0.916,ELEVATED RISK: Interface point between SnowCore and TeraField networks via PIPE-88. Monitor downstream pressure propagation.,2025-12-14 17:54:55
+NODE_ANOMALY,SC-SEP-102,,0.125,0.946,Pressure anomaly risk for SC-SEP-102,2025-12-14 17:54:55
+NODE_ANOMALY,SC-COMP-A,,0.124,0.971,Pressure anomaly risk for SC-COMP-A,2025-12-14 17:54:55
+NODE_ANOMALY,SC-COMP-B,,0.149,0.943,Pressure anomaly risk for SC-COMP-B,2025-12-14 17:54:55
+NODE_ANOMALY,SC-CPF-01,,0.086,0.881,Pressure anomaly risk for SC-CPF-01,2025-12-14 17:54:55
+NODE_ANOMALY,TF-V-204,,0.891,0.955,HIGH RISK: Increased flow from SnowCore via PIPE-88 may exceed pressure rating (600 PSI MAWP). Cross-reference P&ID TF-MID-001 and maintenance ticket MT-2023-4421 for bypass valve issue.,2025-12-14 17:54:55
+NODE_ANOMALY,TF-V-205,,0.293,0.962,Pressure anomaly risk for TF-V-205,2025-12-14 17:54:55
+NODE_ANOMALY,TF-H-301,,0.311,0.86,Pressure anomaly risk for TF-H-301,2025-12-14 17:54:55
+NODE_ANOMALY,TF-COMP-LP-A,,0.286,0.913,Pressure anomaly risk for TF-COMP-LP-A,2025-12-14 17:54:55
+NODE_ANOMALY,TF-TK-401,,0.276,0.972,Pressure anomaly risk for TF-TK-401,2025-12-14 17:54:55
+NODE_ANOMALY,TF-TK-402,,0.289,0.957,Pressure anomaly risk for TF-TK-402,2025-12-14 17:54:55
+NODE_ANOMALY,TF-MID-HUB,,0.279,0.961,Pressure anomaly risk for TF-MID-HUB,2025-12-14 17:54:55
+NODE_ANOMALY,TF-VALVE-101,,0.727,0.911,MEDIUM RISK: Control valve rated at 550 PSI - potential bottleneck for upstream pressure spikes from SnowCore integration.,2025-12-14 17:54:55
+NODE_ANOMALY,TF-VALVE-102,,0.341,0.873,Pressure anomaly risk for TF-VALVE-102,2025-12-14 17:54:55
+LINK_PREDICTION,SC-COMP-B,TF-COMP-LP-A,0.808,0.92,Potential parallel compression path,2025-12-14 17:54:55
+LINK_PREDICTION,SC-CPF-01,TF-TK-401,0.619,0.941,Alternative oil storage routing,2025-12-14 17:54:55
+LINK_PREDICTION,SC-SEP-102,TF-H-301,0.76,0.912,Cross-network separator link,2025-12-14 17:54:55
+LINK_PREDICTION,SC-PAD-45,TF-V-205,0.543,0.85,Secondary well-to-separator path,2025-12-14 17:54:55

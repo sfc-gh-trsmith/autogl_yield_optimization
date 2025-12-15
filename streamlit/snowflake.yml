@@ -1,0 +1,19 @@
+definition_version: 2
+
+entities:
+  autogl_yield_optimization_app:
+    type: streamlit
+    identifier:
+      name: AUTOGL_YIELD_OPTIMIZATION_APP
+      database: AUTOGL_YIELD_OPTIMIZATION
+      schema: AUTOGL_YIELD_OPTIMIZATION
+    title: "SnowCore Permian Command Center"
+    comment: "Unified visualization and AI-powered decision support for the merged SnowCore/TeraField gathering network"
+    main_file: streamlit_app.py
+    pages_dir: pages/
+    query_warehouse: AUTOGL_YIELD_OPTIMIZATION_WH
+    artifacts:
+      - streamlit_app.py
+      - pages/
+      - utils/
+      - environment.yml

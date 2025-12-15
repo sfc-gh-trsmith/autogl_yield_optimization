@@ -1,0 +1,119 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500">
+  <defs>
+    <linearGradient id="bgGrad7" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0f172a"/>
+      <stop offset="100%" style="stop-color:#1e293b"/>
+    </linearGradient>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="800" height="500" fill="url(#bgGrad7)" rx="12"/>
+  
+  <!-- Browser Chrome -->
+  <rect x="20" y="20" width="760" height="460" rx="10" fill="#020617" stroke="#334155" stroke-width="1"/>
+  
+  <!-- Title bar -->
+  <rect x="20" y="20" width="760" height="35" rx="10" fill="#1e293b"/>
+  <rect x="20" y="45" width="760" height="10" fill="#1e293b"/>
+  
+  <!-- Browser dots -->
+  <circle cx="45" cy="37" r="6" fill="#ef4444"/>
+  <circle cx="65" cy="37" r="6" fill="#f59e0b"/>
+  <circle cx="85" cy="37" r="6" fill="#22c55e"/>
+  
+  <!-- URL bar -->
+  <rect x="110" y="27" width="550" height="20" rx="4" fill="#0f172a"/>
+  <text x="125" y="41" fill="#64748b" font-family="system-ui" font-size="10">snowflake.app/autogl-yield-optimization</text>
+  
+  <!-- Dashboard Content -->
+  <g transform="translate(30, 65)">
+    <!-- Sidebar -->
+    <rect x="0" y="0" width="180" height="395" fill="#1e293b"/>
+    
+    <text x="15" y="30" fill="#e2e8f0" font-family="system-ui" font-size="13" font-weight="600">🛢️ Permian Command</text>
+    
+    <rect x="10" y="50" width="160" height="32" rx="4" fill="#0ea5e920"/>
+    <text x="25" y="71" fill="#0ea5e9" font-family="system-ui" font-size="11">🏠 Home</text>
+    
+    <text x="25" y="105" fill="#94a3b8" font-family="system-ui" font-size="11">🗺️ Network Map</text>
+    <text x="25" y="135" fill="#94a3b8" font-family="system-ui" font-size="11">💬 Simulation &amp; Chat</text>
+    
+    <line x1="10" y1="160" x2="170" y2="160" stroke="#334155" stroke-width="1"/>
+    
+    <text x="15" y="185" fill="#64748b" font-family="system-ui" font-size="9" text-transform="uppercase" letter-spacing="1">AI Assistant</text>
+    <rect x="10" y="195" width="160" height="28" rx="4" fill="#a855f720" stroke="#a855f7" stroke-width="1"/>
+    <text x="90" y="214" text-anchor="middle" fill="#a855f7" font-family="system-ui" font-size="10">Show Chat</text>
+    
+    <!-- Main Content -->
+    <g transform="translate(195, 0)">
+      <!-- Problem Banner -->
+      <rect x="0" y="0" width="535" height="65" rx="8" fill="linear-gradient(135deg, rgba(244,63,94,0.15), rgba(14,165,233,0.15))"/>
+      <rect x="0" y="0" width="535" height="4" rx="2" fill="url(#riskGrad)"/>
+      <text x="15" y="28" fill="#e2e8f0" font-family="system-ui" font-size="14" font-weight="600">🛢️ SnowCore Permian Command Center</text>
+      <text x="15" y="50" fill="#94a3b8" font-family="system-ui" font-size="10">Following the acquisition of TeraField Resources, SnowCore operates two disconnected gathering networks...</text>
+      
+      <!-- Section Header -->
+      <rect x="0" y="80" width="25" height="18" rx="3" fill="#334155"/>
+      <text x="12" y="93" text-anchor="middle" fill="#06b6d4" font-family="monospace" font-size="9">01</text>
+      <text x="35" y="93" fill="#e2e8f0" font-family="system-ui" font-size="12" font-weight="600">Asset Registry Comparison</text>
+      
+      <!-- Asset Cards -->
+      <rect x="0" y="105" width="260" height="100" rx="6" fill="#1e293b" stroke="#0ea5e9" stroke-width="1"/>
+      <rect x="0" y="105" width="4" height="100" rx="2" fill="#0ea5e9"/>
+      <text x="15" y="125" fill="#0ea5e9" font-family="system-ui" font-size="11" font-weight="600">SnowCore Energy</text>
+      <text x="15" y="145" fill="#64748b" font-family="system-ui" font-size="9">Modern Infrastructure (2020-2023)</text>
+      <text x="15" y="165" fill="#94a3b8" font-family="system-ui" font-size="9">Total Assets: <tspan fill="#e2e8f0" font-family="monospace">12</tspan></text>
+      <text x="15" y="180" fill="#94a3b8" font-family="system-ui" font-size="9">Avg PSI Rating: <tspan fill="#e2e8f0" font-family="monospace">1,200</tspan></text>
+      <text x="15" y="195" fill="#94a3b8" font-family="system-ui" font-size="9">Data Source: <tspan fill="#e2e8f0">OSIsoft PI / AVEVA</tspan></text>
+      
+      <rect x="275" y="105" width="260" height="100" rx="6" fill="#1e293b" stroke="#f43f5e" stroke-width="1"/>
+      <rect x="275" y="105" width="4" height="100" rx="2" fill="#f43f5e"/>
+      <text x="290" y="125" fill="#f43f5e" font-family="system-ui" font-size="11" font-weight="600">TeraField Resources (Acquired)</text>
+      <text x="290" y="145" fill="#64748b" font-family="system-ui" font-size="9">Legacy Infrastructure (2011-2017)</text>
+      <text x="290" y="165" fill="#94a3b8" font-family="system-ui" font-size="9">Total Assets: <tspan fill="#e2e8f0" font-family="monospace">8</tspan></text>
+      <text x="290" y="180" fill="#94a3b8" font-family="system-ui" font-size="9">Avg PSI Rating: <tspan fill="#e2e8f0" font-family="monospace">650</tspan></text>
+      <text x="290" y="195" fill="#94a3b8" font-family="system-ui" font-size="9">Data Source: <tspan fill="#e2e8f0">CygNet / Rockwell</tspan></text>
+      
+      <!-- KPI Cards -->
+      <g transform="translate(0, 220)">
+        <rect x="0" y="0" width="125" height="70" rx="6" fill="#1e293b" stroke="#334155" stroke-width="1"/>
+        <text x="62" y="30" text-anchor="middle" fill="#06b6d4" font-family="monospace" font-size="22" font-weight="700">$500M</text>
+        <text x="62" y="50" text-anchor="middle" fill="#64748b" font-family="system-ui" font-size="8" text-transform="uppercase" letter-spacing="1">SYNERGY TARGET</text>
+        
+        <rect x="135" y="0" width="125" height="70" rx="6" fill="#1e293b" stroke="#334155" stroke-width="1"/>
+        <text x="197" y="30" text-anchor="middle" fill="#22c55e" font-family="monospace" font-size="22" font-weight="700">-15%</text>
+        <text x="197" y="50" text-anchor="middle" fill="#64748b" font-family="system-ui" font-size="8" text-transform="uppercase" letter-spacing="1">DEFERMENT</text>
+        
+        <rect x="270" y="0" width="125" height="70" rx="6" fill="#1e293b" stroke="#334155" stroke-width="1"/>
+        <text x="332" y="30" text-anchor="middle" fill="#ef4444" font-family="monospace" font-size="22" font-weight="700">3</text>
+        <text x="332" y="50" text-anchor="middle" fill="#64748b" font-family="system-ui" font-size="8" text-transform="uppercase" letter-spacing="1">HIGH RISK</text>
+        
+        <rect x="405" y="0" width="130" height="70" rx="6" fill="#1e293b" stroke="#334155" stroke-width="1"/>
+        <text x="470" y="30" text-anchor="middle" fill="#a855f7" font-family="monospace" font-size="22" font-weight="700">5</text>
+        <text x="470" y="50" text-anchor="middle" fill="#64748b" font-family="system-ui" font-size="8" text-transform="uppercase" letter-spacing="1">HIDDEN LINKS</text>
+      </g>
+      
+      <!-- Alert Card -->
+      <g transform="translate(0, 305)">
+        <rect x="0" y="0" width="535" height="50" rx="6" fill="#ef444420" stroke-left="4px solid #ef4444"/>
+        <rect x="0" y="0" width="4" height="50" rx="2" fill="#ef4444"/>
+        <text x="15" y="18" fill="#ef4444" font-family="system-ui" font-size="9" text-transform="uppercase" letter-spacing="0.5">🚨 HIGH RISK - TF-V-204</text>
+        <text x="15" y="35" fill="#e2e8f0" font-family="system-ui" font-size="10">Risk Score: 0.92 | System: TERAFIELD | Type: SEPARATOR | Max PSI: 600</text>
+        <text x="15" y="48" fill="#94a3b8" font-family="system-ui" font-size="9">Predicted link from SC-SEP-101 creates pressure cascade risk exceeding rated capacity.</text>
+      </g>
+      
+      <!-- Navigation Buttons -->
+      <g transform="translate(0, 365)">
+        <rect x="0" y="0" width="170" height="30" rx="4" fill="#1e293b" stroke="#334155" stroke-width="1"/>
+        <text x="85" y="20" text-anchor="middle" fill="#94a3b8" font-family="system-ui" font-size="10">🗺️ View Network Map</text>
+        
+        <rect x="180" y="0" width="170" height="30" rx="4" fill="#1e293b" stroke="#334155" stroke-width="1"/>
+        <text x="265" y="20" text-anchor="middle" fill="#94a3b8" font-family="system-ui" font-size="10">💬 Open AI Chat</text>
+        
+        <rect x="360" y="0" width="170" height="30" rx="4" fill="#1e293b" stroke="#334155" stroke-width="1"/>
+        <text x="445" y="20" text-anchor="middle" fill="#94a3b8" font-family="system-ui" font-size="10">🔄 Refresh Data</text>
+      </g>
+    </g>
+  </g>
+</svg>
+

@@ -2,12 +2,14 @@
 -- 02_tables.sql - Table DDL and Data Loading for SnowCore Permian Demo
 -- ============================================================================
 -- Creates tables and loads pre-generated synthetic data from stage
+-- 
+-- Runs as: AUTOGL_YIELD_OPTIMIZATION_ROLE (project role)
 -- ============================================================================
 
-USE ROLE ACCOUNTADMIN;
+USE ROLE AUTOGL_YIELD_OPTIMIZATION_ROLE;
 USE DATABASE AUTOGL_YIELD_OPTIMIZATION;
-USE SCHEMA PUBLIC;
-USE WAREHOUSE AUTOGL_WH;
+USE SCHEMA AUTOGL_YIELD_OPTIMIZATION;
+USE WAREHOUSE AUTOGL_YIELD_OPTIMIZATION_WH;
 
 -- ============================================================================
 -- File Format for CSV Loading
@@ -73,6 +75,7 @@ CREATE OR REPLACE TABLE SCADA_TELEMETRY (
     ASSET_ID VARCHAR(50) NOT NULL,
     TIMESTAMP TIMESTAMP_NTZ NOT NULL,
     FLOW_RATE_BOPD FLOAT,                -- Barrels of Oil Per Day equivalent
+    GAS_FLOW_MCFD FLOAT,                 -- Gas flow in MCF (thousand cubic feet) per day
     PRESSURE_PSI FLOAT,                  -- Current pressure reading
     TEMPERATURE_F FLOAT,                 -- Temperature in Fahrenheit
     SOURCE_SYSTEM VARCHAR(20),           -- Original data source
@@ -119,6 +122,11 @@ CREATE OR REPLACE TABLE SCADA_AGGREGATES (
     MAX_FLOW_RATE_BOPD FLOAT,
     MIN_FLOW_RATE_BOPD FLOAT,
     TOTAL_PRODUCTION_BBL FLOAT,           -- Barrels produced that day
+    
+    -- Gas metrics
+    AVG_GAS_FLOW_MCFD FLOAT,              -- Average gas flow in MCF per day
+    TOTAL_GAS_MCF FLOAT,                  -- Total gas produced that day (MCF)
+    GAS_OIL_RATIO FLOAT,                  -- GOR = Gas MCF / Oil BBL * 1000 (SCF/BBL)
     
     -- Pressure metrics
     AVG_PRESSURE_PSI FLOAT,
@@ -185,7 +193,16 @@ SELECT
     AVG(t.FLOW_RATE_BOPD) AS AVG_FLOW_RATE_BOPD,
     MAX(t.FLOW_RATE_BOPD) AS MAX_FLOW_RATE_BOPD,
     MIN(t.FLOW_RATE_BOPD) AS MIN_FLOW_RATE_BOPD,
-    SUM(t.FLOW_RATE_BOPD) / 1440 AS TOTAL_PRODUCTION_BBL,  -- Convert daily rate to actual barrels
+    SUM(t.FLOW_RATE_BOPD) / NULLIF(COUNT(*), 0) AS TOTAL_PRODUCTION_BBL,  -- Use actual reading count, not hardcoded 1440 (TeraField has gaps)
+    
+    -- Gas metrics
+    AVG(t.GAS_FLOW_MCFD) AS AVG_GAS_FLOW_MCFD,
+    SUM(t.GAS_FLOW_MCFD) / NULLIF(COUNT(*), 0) AS TOTAL_GAS_MCF,
+    -- GOR = (Gas MCF / Oil BBL) * 1000 to get SCF/BBL
+    CASE 
+        WHEN AVG(t.FLOW_RATE_BOPD) > 0 THEN (AVG(t.GAS_FLOW_MCFD) / AVG(t.FLOW_RATE_BOPD)) * 1000
+        ELSE NULL 
+    END AS GAS_OIL_RATIO,
     
     -- Pressure metrics
     AVG(t.PRESSURE_PSI) AS AVG_PRESSURE_PSI,
@@ -226,4 +243,3 @@ ORDER BY SCORE DESC
 LIMIT 5;
 
 SELECT 'Table creation and data loading complete!' AS STATUS;
-

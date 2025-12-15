@@ -2,9 +2,14 @@
 # Cortex Analyst Semantic View - Permian Analytics
 # ============================================================================
 # Semantic model for natural language queries over SCADA and asset data
+# 
+# Naming Convention (per SNOWFLAKE_DEPLOYMENT_SCRIPT_GUIDELINES.md):
+#   DATABASE: AUTOGL_YIELD_OPTIMIZATION
+#   SCHEMA: AUTOGL_YIELD_OPTIMIZATION
+#   VIEW_NAME: AUTOGL_YIELD_OPTIMIZATION_ANALYTICS_VIEW
 # ============================================================================
 
-name: PERMIAN_ANALYTICS_VIEW
+name: AUTOGL_YIELD_OPTIMIZATION_ANALYTICS_VIEW
 description: >
   Semantic view for analyzing SnowCore and TeraField asset performance,
   production metrics, and operational KPIs across the Permian Basin gathering network.
@@ -15,7 +20,7 @@ tables:
     description: Daily aggregated SCADA metrics by asset
     base_table:
       database: AUTOGL_YIELD_OPTIMIZATION
-      schema: PUBLIC
+      schema: AUTOGL_YIELD_OPTIMIZATION
       table: SCADA_AGGREGATES
     
     dimensions:
@@ -80,6 +85,32 @@ tables:
           - production rate
           - BOPD
           
+      - name: avg_gas_flow_mcfd
+        description: Average gas flow in thousand cubic feet per day
+        expr: AVG(AVG_GAS_FLOW_MCFD)
+        data_type: NUMBER
+        synonyms:
+          - gas flow
+          - gas production
+          - MCFD
+          
+      - name: total_gas_mcf
+        description: Total gas produced in thousand cubic feet
+        expr: SUM(TOTAL_GAS_MCF)
+        data_type: NUMBER
+        synonyms:
+          - gas volume
+          - total gas
+          
+      - name: gas_oil_ratio
+        description: Gas-Oil Ratio in standard cubic feet per barrel (SCF/BBL)
+        expr: AVG(GAS_OIL_RATIO)
+        data_type: NUMBER
+        synonyms:
+          - GOR
+          - gas ratio
+          - SCF per BBL
+          
       - name: max_pressure_psi
         description: Maximum pressure reading in PSI
         expr: MAX(MAX_PRESSURE_PSI)
@@ -135,7 +166,7 @@ tables:
     description: Master registry of all physical equipment
     base_table:
       database: AUTOGL_YIELD_OPTIMIZATION
-      schema: PUBLIC
+      schema: AUTOGL_YIELD_OPTIMIZATION
       table: ASSET_MASTER
     
     dimensions:
@@ -192,7 +223,7 @@ tables:
     description: ML model predictions for anomalies and link discovery
     base_table:
       database: AUTOGL_YIELD_OPTIMIZATION
-      schema: PUBLIC
+      schema: AUTOGL_YIELD_OPTIMIZATION
       table: GRAPH_PREDICTIONS
     
     dimensions:
@@ -279,4 +310,14 @@ verified_queries:
       WHERE PREDICTION_TYPE = 'NODE_ANOMALY'
         AND SCORE > 0.5
       ORDER BY SCORE DESC
-
+      
+  - question: "What is the average GOR by source system?"
+    sql: |
+      SELECT 
+        SOURCE_SYSTEM,
+        ROUND(AVG(GAS_OIL_RATIO), 0) AS AVG_GOR_SCF_BBL,
+        ROUND(SUM(TOTAL_GAS_MCF), 0) AS TOTAL_GAS_MCF,
+        ROUND(SUM(TOTAL_PRODUCTION_BBL), 0) AS TOTAL_OIL_BBL
+      FROM SCADA_AGGREGATES
+      GROUP BY SOURCE_SYSTEM
+      ORDER BY AVG_GOR_SCF_BBL DESC

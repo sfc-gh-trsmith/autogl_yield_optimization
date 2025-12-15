@@ -246,7 +246,7 @@ def generate_scada_telemetry(assets):
                     # Pressure spikes dangerously close to (and eventually exceeding) limit
                     lag_minutes = minutes_since_event - 5
                     spike = min(250, lag_minutes * 2)  # Ramps up to +250 PSI
-                    pressure = baseline["pressure"] + spike
+                    pressure += spike  # Add spike to existing pressure (preserves daily patterns + noise)
                     
                     # Cap at realistic but dangerous level (800 PSI vs 600 limit!)
                     pressure = min(pressure, 800)
@@ -254,10 +254,22 @@ def generate_scada_telemetry(assets):
             # Temperature (correlated with pressure)
             temperature = 120 + (pressure / 20) + random.gauss(0, 3)
             
+            # Gas flow rate (GOR typically 1000-3000 SCF/BBL for Permian)
+            # Higher GOR for wells/separators, lower for downstream equipment
+            asset_type = asset["ASSET_TYPE"]
+            if asset_type in ["WELL_PAD", "SEPARATOR"]:
+                base_gor = random.uniform(1500, 2500)  # SCF per BBL
+            else:
+                base_gor = random.uniform(500, 1000)  # Lower GOR downstream
+            
+            gas_flow_mcfd = (flow * base_gor / 1000) * daily_factor  # MCFD = MCF per day
+            gas_flow_mcfd += random.gauss(0, gas_flow_mcfd * 0.03)  # 3% noise
+            
             telemetry.append({
                 "ASSET_ID": asset_id,
                 "TIMESTAMP": current_time.strftime("%Y-%m-%d %H:%M:%S"),
                 "FLOW_RATE_BOPD": round(max(0, flow), 2),
+                "GAS_FLOW_MCFD": round(max(0, gas_flow_mcfd), 2),
                 "PRESSURE_PSI": round(max(0, pressure), 2),
                 "TEMPERATURE_F": round(temperature, 1),
                 "SOURCE_SYSTEM": asset["SOURCE_SYSTEM"],
@@ -301,13 +313,23 @@ def generate_graph_predictions(assets, edges):
         if asset_id == "TF-V-204":
             base_risk = 0.92  # Very high risk!
         
+        # Generate context-specific explanations
+        if asset_id == "TF-V-204":
+            explanation = "HIGH RISK: Increased flow from SnowCore via PIPE-88 may exceed pressure rating (600 PSI MAWP). Cross-reference P&ID TF-MID-001 and maintenance ticket MT-2023-4421 for bypass valve issue."
+        elif asset_id == "TF-VALVE-101":
+            explanation = "MEDIUM RISK: Control valve rated at 550 PSI - potential bottleneck for upstream pressure spikes from SnowCore integration."
+        elif asset_id == "SC-SEP-101":
+            explanation = "ELEVATED RISK: Interface point between SnowCore and TeraField networks via PIPE-88. Monitor downstream pressure propagation."
+        else:
+            explanation = f"Pressure anomaly risk for {asset_id}"
+        
         predictions.append({
             "PREDICTION_TYPE": "NODE_ANOMALY",
             "ENTITY_ID": asset_id,
             "RELATED_ENTITY_ID": None,
             "SCORE": round(min(1.0, base_risk + random.uniform(-0.05, 0.05)), 3),
             "CONFIDENCE": round(random.uniform(0.85, 0.98), 3),
-            "EXPLANATION": f"Pressure anomaly risk for {asset_id}",
+            "EXPLANATION": explanation,
             "PREDICTION_TIMESTAMP": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
         })
     
@@ -383,7 +405,7 @@ def main():
     write_csv(
         "scada_telemetry.csv",
         telemetry,
-        ["ASSET_ID", "TIMESTAMP", "FLOW_RATE_BOPD", "PRESSURE_PSI", 
+        ["ASSET_ID", "TIMESTAMP", "FLOW_RATE_BOPD", "GAS_FLOW_MCFD", "PRESSURE_PSI", 
          "TEMPERATURE_F", "SOURCE_SYSTEM"]
     )
     

@@ -1,0 +1,20 @@
+definition_version: 2
+
+entities:
+  autogl_yield_optimization_notebook:
+    type: notebook
+    identifier:
+      name: AUTOGL_YIELD_OPTIMIZATION_NOTEBOOK
+      database: AUTOGL_YIELD_OPTIMIZATION
+      schema: AUTOGL_YIELD_OPTIMIZATION
+    title: "AutoGL Link Prediction - SnowCore Permian Integration"
+    comment: "Uses Auto Graph Learning to discover hidden network connections and predict pressure anomaly risks"
+    notebook_file: autogl_link_prediction.ipynb
+    query_warehouse: AUTOGL_YIELD_OPTIMIZATION_WH
+    from_stage: "@AUTOGL_YIELD_OPTIMIZATION.AUTOGL_YIELD_OPTIMIZATION.NOTEBOOK_STAGE"
+    handler: notebook
+    compute_pool: AUTOGL_YIELD_OPTIMIZATION_COMPUTE_POOL
+    runtime_name: "SYSTEM$BASIC_RUNTIME"
+    main_file: autogl_link_prediction.ipynb
+    external_access_integrations:
+      - AUTOGL_YIELD_OPTIMIZATION_EXTERNAL_ACCESS
