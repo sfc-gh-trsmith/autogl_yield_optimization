@@ -98,11 +98,18 @@ SET EXT_ACCESS_RULE_REF = $FULL_PREFIX || '.' || $PROJECT_SCHEMA || '.' || $PROJ
 
 -- Create external access integration using dynamic SQL
 -- This is necessary because ALLOWED_NETWORK_RULES expects a literal, not a variable
-EXECUTE IMMEDIATE 
-    'CREATE OR REPLACE EXTERNAL ACCESS INTEGRATION ' || $PROJECT_EXTERNAL_ACCESS ||
-    ' ALLOWED_NETWORK_RULES = (' || $EXT_ACCESS_RULE_REF || ')' ||
-    ' ENABLED = TRUE' ||
-    ' COMMENT = ''External access integration for pip installs in Snowflake Notebooks''';
+-- Use scripting block to avoid 256-byte session variable limit
+EXECUTE IMMEDIATE $$
+DECLARE
+    create_eai_sql VARCHAR;
+BEGIN
+    create_eai_sql := 'CREATE OR REPLACE EXTERNAL ACCESS INTEGRATION ' || $PROJECT_EXTERNAL_ACCESS ||
+        ' ALLOWED_NETWORK_RULES = (' || $EXT_ACCESS_RULE_REF || ')' ||
+        ' ENABLED = TRUE' ||
+        ' COMMENT = ''External access integration for pip installs''';
+    EXECUTE IMMEDIATE create_eai_sql;
+END;
+$$;
 
 -- Grant external access integration usage to project role
 GRANT USAGE ON INTEGRATION IDENTIFIER($PROJECT_EXTERNAL_ACCESS) TO ROLE IDENTIFIER($PROJECT_ROLE);
@@ -142,9 +149,9 @@ GRANT SELECT ON FUTURE TABLES IN SCHEMA IDENTIFIER($FQ_SCHEMA)
 USE ROLE IDENTIFIER($PROJECT_ROLE);
 
 -- Execute dynamic USE statements for database/schema context
-EXECUTE IMMEDIATE 'USE DATABASE ' || $FULL_PREFIX;
-EXECUTE IMMEDIATE 'USE SCHEMA ' || $PROJECT_SCHEMA;
-EXECUTE IMMEDIATE 'USE WAREHOUSE ' || $PROJECT_WH;
+USE DATABASE IDENTIFIER($FULL_PREFIX);
+USE SCHEMA IDENTIFIER($PROJECT_SCHEMA);
+USE WAREHOUSE IDENTIFIER($PROJECT_WH);
 
 -- Stage for synthetic data CSVs
 CREATE OR REPLACE STAGE DATA_STAGE

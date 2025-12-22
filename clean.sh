@@ -39,9 +39,6 @@ CONNECTION="demo"
 ENV_PREFIX=""
 FORCE=false
 
-# Project naming base (per guidelines)
-PROJECT_PREFIX="AUTOGL_YIELD_OPTIMIZATION"
-
 # Display usage
 usage() {
     cat << EOF
@@ -94,6 +91,36 @@ while [[ $# -gt 0 ]]; do
             ;;
     esac
 done
+
+# Read project name from .cursor/PROJECT_NAME.md
+PROJECT_NAME_FILE="${SCRIPT_DIR}/.cursor/PROJECT_NAME.md"
+DIR_BASENAME=$(basename "$SCRIPT_DIR")
+
+if [ -f "$PROJECT_NAME_FILE" ]; then
+    PROJECT_NAME=$(head -1 "$PROJECT_NAME_FILE" | tr -d '[:space:]')
+else
+    PROJECT_NAME=""
+fi
+
+# Validate project name (skip prompts if --force is set)
+if [ -z "$PROJECT_NAME" ]; then
+    echo -e "${YELLOW}[WARN] .cursor/PROJECT_NAME.md not found${NC}"
+    echo "Using directory name: $DIR_BASENAME"
+    if [ "$FORCE" = false ]; then
+        read -p "Continue? (yes/no): " CONFIRM
+        [ "$CONFIRM" != "yes" ] && exit 1
+    fi
+    PROJECT_NAME="$DIR_BASENAME"
+elif [ "$PROJECT_NAME" != "$DIR_BASENAME" ]; then
+    echo -e "${YELLOW}[WARN] Project name '$PROJECT_NAME' differs from directory '$DIR_BASENAME'${NC}"
+    if [ "$FORCE" = false ]; then
+        read -p "Continue with '$PROJECT_NAME'? (yes/no): " CONFIRM
+        [ "$CONFIRM" != "yes" ] && exit 1
+    fi
+fi
+
+# Convert to uppercase for Snowflake naming
+PROJECT_PREFIX=$(echo "$PROJECT_NAME" | tr '[:lower:]' '[:upper:]')
 
 # Build connection string
 SNOW_CONN="-c $CONNECTION"

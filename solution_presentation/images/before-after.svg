@@ -1,0 +1,88 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 400">
+  <!-- Background: Midnight / Dark Blue -->
+  <rect width="800" height="400" fill="#0D1B2A" rx="0"/>
+  
+  <!-- Title -->
+  <text x="400" y="40" text-anchor="middle" fill="#E2E8F0" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="600">The Transformation</text>
+
+  <!-- Split Divider -->
+  <line x1="400" y1="70" x2="400" y2="350" stroke="#29B5E8" stroke-width="1" stroke-dasharray="5,5" opacity="0.3"/>
+
+  <!-- Left Side: BEFORE (Reactive) -->
+  <g transform="translate(40, 70)">
+    <!-- Header -->
+    <text x="160" y="30" text-anchor="middle" fill="#EF4444" font-family="system-ui, sans-serif" font-size="16" font-weight="700">BEFORE: Reactive</text>
+    
+    <!-- Pain Points -->
+    <g transform="translate(20, 60)">
+      <!-- Item 1 -->
+      <text x="0" y="0" fill="#EF4444" font-family="monospace" font-size="14" font-weight="bold">×</text>
+      <text x="20" y="0" fill="#E2E8F0" font-family="system-ui, sans-serif" font-size="13" font-weight="600">Manual Search</text>
+      <text x="20" y="15" fill="#94A3B8" font-family="system-ui, sans-serif" font-size="11">Hours hunting PDF specs</text>
+
+      <!-- Item 2 -->
+      <g transform="translate(0, 50)">
+        <text x="0" y="0" fill="#EF4444" font-family="monospace" font-size="14" font-weight="bold">×</text>
+        <text x="20" y="0" fill="#E2E8F0" font-family="system-ui, sans-serif" font-size="13" font-weight="600">Siloed Data</text>
+        <text x="20" y="15" fill="#94A3B8" font-family="system-ui, sans-serif" font-size="11">PI &amp; CygNet disconnected</text>
+      </g>
+
+      <!-- Item 3 -->
+      <g transform="translate(0, 100)">
+        <text x="0" y="0" fill="#EF4444" font-family="monospace" font-size="14" font-weight="bold">×</text>
+        <text x="20" y="0" fill="#E2E8F0" font-family="system-ui, sans-serif" font-size="13" font-weight="600">Unknown Limits</text>
+        <text x="20" y="15" fill="#94A3B8" font-family="system-ui, sans-serif" font-size="11">Blind to pressure ratings</text>
+      </g>
+
+      <!-- Item 4 -->
+      <g transform="translate(0, 150)">
+        <text x="0" y="0" fill="#EF4444" font-family="monospace" font-size="14" font-weight="bold">×</text>
+        <text x="20" y="0" fill="#E2E8F0" font-family="system-ui, sans-serif" font-size="13" font-weight="600">Guesswork Routing</text>
+        <text x="20" y="15" fill="#94A3B8" font-family="system-ui, sans-serif" font-size="11">Risk of flaring events</text>
+      </g>
+    </g>
+
+    <!-- KPI Box -->
+    <rect x="60" y="240" width="200" height="30" rx="4" fill="#EF444420" stroke="#EF4444" stroke-width="1"/>
+    <text x="160" y="260" text-anchor="middle" fill="#F87171" font-family="system-ui, sans-serif" font-size="12" font-weight="600">Response Time: WEEKS</text>
+  </g>
+
+  <!-- Right Side: AFTER (Proactive) -->
+  <g transform="translate(440, 70)">
+    <!-- Header -->
+    <text x="160" y="30" text-anchor="middle" fill="#22C55E" font-family="system-ui, sans-serif" font-size="16" font-weight="700">AFTER: Proactive</text>
+    
+    <!-- Benefits -->
+    <g transform="translate(20, 60)">
+      <!-- Item 1 -->
+      <text x="0" y="0" fill="#22C55E" font-family="monospace" font-size="14" font-weight="bold">+</text>
+      <text x="20" y="0" fill="#E2E8F0" font-family="system-ui, sans-serif" font-size="13" font-weight="600">Automated Retrieval</text>
+      <text x="20" y="15" fill="#94A3B8" font-family="system-ui, sans-serif" font-size="11">Cortex Search finds specs instantly</text>
+
+      <!-- Item 2 -->
+      <g transform="translate(0, 50)">
+        <text x="0" y="0" fill="#22C55E" font-family="monospace" font-size="14" font-weight="bold">+</text>
+        <text x="20" y="0" fill="#E2E8F0" font-family="system-ui, sans-serif" font-size="13" font-weight="600">Unified Foundation</text>
+        <text x="20" y="15" fill="#94A3B8" font-family="system-ui, sans-serif" font-size="11">Single source of truth</text>
+      </g>
+
+      <!-- Item 3 -->
+      <g transform="translate(0, 100)">
+        <text x="0" y="0" fill="#22C55E" font-family="monospace" font-size="14" font-weight="bold">+</text>
+        <text x="20" y="0" fill="#E2E8F0" font-family="system-ui, sans-serif" font-size="13" font-weight="600">Real-Time Limits</text>
+        <text x="20" y="15" fill="#94A3B8" font-family="system-ui, sans-serif" font-size="11">AutoGL predicts dependencies</text>
+      </g>
+
+      <!-- Item 4 -->
+      <g transform="translate(0, 150)">
+        <text x="0" y="0" fill="#22C55E" font-family="monospace" font-size="14" font-weight="bold">+</text>
+        <text x="20" y="0" fill="#E2E8F0" font-family="system-ui, sans-serif" font-size="13" font-weight="600">Simulated Outcomes</text>
+        <text x="20" y="15" fill="#94A3B8" font-family="system-ui, sans-serif" font-size="11">Safe routing decisions</text>
+      </g>
+    </g>
+
+    <!-- KPI Box -->
+    <rect x="60" y="240" width="200" height="30" rx="4" fill="#22C55E20" stroke="#22C55E" stroke-width="1"/>
+    <text x="160" y="260" text-anchor="middle" fill="#4ADE80" font-family="system-ui, sans-serif" font-size="12" font-weight="600">Response Time: MINUTES</text>
+  </g>
+</svg>

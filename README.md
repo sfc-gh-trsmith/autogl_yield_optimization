@@ -8,10 +8,10 @@ Following the acquisition of TeraField Resources, this demo showcases how Snowfl
 
 ### Key Features
 
-- **🗺️ Unified Network Visualization**: Interactive geospatial map showing SnowCore (Blue) and TeraField (Red) assets with pipeline connections
-- **🤖 AutoGL Link Prediction**: Graph neural network that discovers hidden dependencies between the two networks
-- **💬 AI Integration Assistant**: Cortex Agent that bridges live SCADA data with legacy engineering specs
-- **⚠️ Pressure Risk Detection**: Real-time alerts when routing decisions would exceed equipment limits
+- **Unified Network Visualization**: Interactive geospatial map showing SnowCore (Blue) and TeraField (Red) assets with pipeline connections
+- **AutoGL Link Prediction**: Graph neural network that discovers hidden dependencies between the two networks
+- **AI Integration Assistant**: Cortex Agent that bridges live SCADA data with legacy engineering specs
+- **Pressure Risk Detection**: Real-time alerts when routing decisions would exceed equipment limits
 
 ### The "Wow" Moment
 

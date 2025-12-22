@@ -114,7 +114,7 @@ def render_chat_panel(session, schema_prefix: str, assets_df=None, panel_key: st
     
     # Panel header
     st.markdown("""
-    <div class="chat-panel-header">💬 AI Integration Assistant</div>
+    <div class="chat-panel-header">AI Integration Assistant</div>
     """, unsafe_allow_html=True)
     
     # Show selected asset context if available
@@ -122,7 +122,7 @@ def render_chat_panel(session, schema_prefix: str, assets_df=None, panel_key: st
         ctx = st.session_state.selected_asset_context
         st.markdown(f"""
         <div class="context-badge">
-            🎯 <strong>{ctx.get('asset_id', 'Unknown')}</strong> 
+            <strong>{ctx.get('asset_id', 'Unknown')}</strong> 
             ({ctx.get('source_system', '')} {ctx.get('asset_type', '')})
         </div>
         """, unsafe_allow_html=True)
@@ -138,7 +138,7 @@ def render_chat_panel(session, schema_prefix: str, assets_df=None, panel_key: st
         if not st.session_state.chat_history:
             st.markdown("""
             <div class="chat-welcome">
-                <p>👋 Hello! I'm the Permian Integration Assistant.</p>
+                <p>Hello! I'm the Permian Integration Assistant.</p>
                 <p>Ask me about:</p>
                 <ul>
                     <li>Asset risk assessments</li>
@@ -192,12 +192,12 @@ def render_chat_panel(session, schema_prefix: str, assets_df=None, panel_key: st
     col_send, col_clear = st.columns([3, 1])
     
     with col_send:
-        if st.button("📤 Send", key=f"send_{panel_key}", use_container_width=True):
+        if st.button("Send", key=f"send_{panel_key}", use_container_width=True):
             if user_input:
                 _process_chat_message(session, schema_prefix, user_input, assets_df)
     
     with col_clear:
-        if st.button("🗑️", key=f"clear_{panel_key}", use_container_width=True, help="Clear chat"):
+        if st.button("Clear", key=f"clear_{panel_key}", use_container_width=True, help="Clear chat"):
             st.session_state.chat_history = []
             st.rerun()
 
@@ -219,7 +219,7 @@ def _process_chat_message(session, schema_prefix: str, user_input: str, assets_d
                        f"System: {asset_ctx.get('source_system', 'unknown')}, " \
                        f"Risk Score: {asset_ctx.get('risk_score', 0):.2f}). "
     
-    full_prompt = context_prefix + user_input
+    full_prompt = context_prefix + user_input + " No preamble, headers, or follow-up questions"
     
     # Call Cortex Agent with Analyst + Search tools
     try:
@@ -252,7 +252,7 @@ def _process_chat_message(session, schema_prefix: str, user_input: str, assets_d
             response = session.sql(f"""
                 SELECT SNOWFLAKE.CORTEX.COMPLETE(
                     'mistral-large2',
-                    'You are the Permian Integration Assistant. You help with asset risk assessments, equipment specifications from P&IDs, production routing, and network comparisons. {context_prefix}Answer concisely: {user_input.replace("'", "''")}'
+                    'You are the Permian Integration Assistant. You help with asset risk assessments, equipment specifications from P&IDs, production routing, and network comparisons. {context_prefix}Answer concisely: {user_input.replace("'", "''")}. No preamble, headers, or follow-up questions'
                 ) AS RESPONSE
             """).to_pandas()
             assistant_response = response['RESPONSE'].values[0]
@@ -297,6 +297,6 @@ def add_simulation_result_to_chat(result_type: str, message: str):
     
     st.session_state.chat_history.append({
         'role': 'system',
-        'content': f"🔬 Simulation: {message}"
+        'content': f"Simulation: {message}"
     })
 

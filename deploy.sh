@@ -38,17 +38,40 @@ YELLOW='\033[1;33m'
 BLUE='\033[0;34m'
 NC='\033[0m' # No Color
 
+# Get script directory and change to it
+SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+cd "$SCRIPT_DIR"
+
 # Default configuration
 CONNECTION="demo"
 ENV_PREFIX=""
 ONLY_COMPONENT=""
 
-# Project naming base (per guidelines)
-PROJECT_PREFIX="AUTOGL_YIELD_OPTIMIZATION"
+# Read project name from .cursor/PROJECT_NAME.md
+PROJECT_NAME_FILE="${SCRIPT_DIR}/.cursor/PROJECT_NAME.md"
+DIR_BASENAME=$(basename "$SCRIPT_DIR")
 
-# Get script directory and change to it
-SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-cd "$SCRIPT_DIR"
+if [ -f "$PROJECT_NAME_FILE" ]; then
+    PROJECT_NAME=$(head -1 "$PROJECT_NAME_FILE" | tr -d '[:space:]')
+else
+    PROJECT_NAME=""
+fi
+
+# Validate project name
+if [ -z "$PROJECT_NAME" ]; then
+    echo -e "${YELLOW}[WARN] .cursor/PROJECT_NAME.md not found${NC}"
+    echo "Using directory name: $DIR_BASENAME"
+    read -p "Continue? (yes/no): " CONFIRM
+    [ "$CONFIRM" != "yes" ] && exit 1
+    PROJECT_NAME="$DIR_BASENAME"
+elif [ "$PROJECT_NAME" != "$DIR_BASENAME" ]; then
+    echo -e "${YELLOW}[WARN] Project name '$PROJECT_NAME' differs from directory '$DIR_BASENAME'${NC}"
+    read -p "Continue with '$PROJECT_NAME'? (yes/no): " CONFIRM
+    [ "$CONFIRM" != "yes" ] && exit 1
+fi
+
+# Convert to uppercase for Snowflake naming
+PROJECT_PREFIX=$(echo "$PROJECT_NAME" | tr '[:lower:]' '[:upper:]')
 
 # Display usage
 usage() {

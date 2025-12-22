@@ -7,6 +7,8 @@ Production simulation controls with interactive map and AI Integration Assistant
 import streamlit as st
 import pandas as pd
 import pydeck as pdk
+import plotly.express as px
+import plotly.graph_objects as go
 from snowflake.snowpark.context import get_active_session
 import sys
 sys.path.insert(0, '..')
@@ -111,13 +113,18 @@ st.markdown("""
 
 st.sidebar.markdown("""
 <div style="padding: 0.5rem 0 1rem 0; border-bottom: 1px solid #334155; margin-bottom: 1rem;">
-    <div style="font-size: 1.1rem; font-weight: 600; color: #e2e8f0;">🛢️ Permian Command Center</div>
+    <div style="font-size: 1.1rem; font-weight: 600; color: #e2e8f0;">Permian Command Center</div>
 </div>
 """, unsafe_allow_html=True)
 
 st.sidebar.page_link("streamlit_app.py", label="Home", icon="🏠")
 st.sidebar.page_link("pages/1_Network_Map.py", label="Network Discovery Map", icon="🗺️")
 st.sidebar.page_link("pages/2_Simulation_Chat.py", label="Simulation & Chat", icon="💬")
+st.sidebar.page_link("pages/4_Telemetry_Explorer.py", label="Telemetry Explorer", icon="📈")
+st.sidebar.page_link("pages/5_Production_Analytics.py", label="Production Analytics", icon="📊")
+st.sidebar.page_link("pages/6_Document_Intelligence.py", label="Document Intelligence", icon="📄")
+st.sidebar.markdown("---")
+st.sidebar.page_link("pages/3_About.py", label="About", icon="ℹ️")
 
 st.sidebar.markdown("---")
 
@@ -125,7 +132,7 @@ st.sidebar.markdown("---")
 if 'show_chat_panel' not in st.session_state:
     st.session_state.show_chat_panel = True
 
-st.sidebar.markdown("#### 💬 AI Assistant")
+st.sidebar.markdown("#### AI Assistant")
 if st.sidebar.button(
     "Show Chat" if not st.session_state.show_chat_panel else "Hide Chat",
     key="toggle_chat_sim",
@@ -139,7 +146,7 @@ st.sidebar.markdown("---")
 # Header
 st.markdown("""
 <div class="page-header">
-    <h1>💬 Simulation & Chat</h1>
+    <h1>Simulation & Chat</h1>
 </div>
 """, unsafe_allow_html=True)
 
@@ -171,41 +178,49 @@ if 'sim_selected_asset' not in st.session_state:
 @st.cache_data(ttl=300)
 def load_simulation_data():
     """Load asset data with location info for map and simulation."""
-    assets = session.sql(f"""
-        SELECT 
-            a.ASSET_ID,
-            a.SOURCE_SYSTEM,
-            a.ASSET_TYPE,
-            a.MAX_PRESSURE_RATING_PSI,
-            a.LATITUDE,
-            a.LONGITUDE,
-            COALESCE(p.SCORE, 0) as RISK_SCORE,
-            agg.AVG_PRESSURE_PSI,
-            agg.AVG_FLOW_RATE_BOPD
-        FROM {SCHEMA_PREFIX}.ASSET_MASTER a
-        LEFT JOIN {SCHEMA_PREFIX}.GRAPH_PREDICTIONS p 
-            ON a.ASSET_ID = p.ENTITY_ID 
-            AND p.PREDICTION_TYPE = 'NODE_ANOMALY'
-        LEFT JOIN (
-            SELECT ASSET_ID, AVG_PRESSURE_PSI, AVG_FLOW_RATE_BOPD
-            FROM {SCHEMA_PREFIX}.SCADA_AGGREGATES
-            WHERE RECORD_DATE = (SELECT MAX(RECORD_DATE) FROM {SCHEMA_PREFIX}.SCADA_AGGREGATES)
-        ) agg ON a.ASSET_ID = agg.ASSET_ID
-    """).to_pandas()
-    return assets
+    try:
+        assets = session.sql(f"""
+            SELECT 
+                a.ASSET_ID,
+                a.SOURCE_SYSTEM,
+                a.ASSET_TYPE,
+                a.MAX_PRESSURE_RATING_PSI,
+                a.LATITUDE,
+                a.LONGITUDE,
+                COALESCE(p.SCORE, 0) as RISK_SCORE,
+                agg.AVG_PRESSURE_PSI,
+                agg.AVG_FLOW_RATE_BOPD
+            FROM {SCHEMA_PREFIX}.ASSET_MASTER a
+            LEFT JOIN {SCHEMA_PREFIX}.GRAPH_PREDICTIONS p 
+                ON a.ASSET_ID = p.ENTITY_ID 
+                AND p.PREDICTION_TYPE = 'NODE_ANOMALY'
+            LEFT JOIN (
+                SELECT ASSET_ID, AVG_PRESSURE_PSI, AVG_FLOW_RATE_BOPD
+                FROM {SCHEMA_PREFIX}.SCADA_AGGREGATES
+                WHERE RECORD_DATE = (SELECT MAX(RECORD_DATE) FROM {SCHEMA_PREFIX}.SCADA_AGGREGATES)
+            ) agg ON a.ASSET_ID = agg.ASSET_ID
+        """).to_pandas()
+        return assets
+    except Exception as e:
+        st.error(f"Error loading simulation data: {str(e)}")
+        return pd.DataFrame()
 
 @st.cache_data(ttl=300)
 def load_network_edges():
     """Load network edge data for map visualization."""
-    return session.sql(f"""
-        SELECT 
-            SEGMENT_ID,
-            SOURCE_ASSET_ID,
-            TARGET_ASSET_ID,
-            STATUS
-        FROM {SCHEMA_PREFIX}.NETWORK_EDGES
-        WHERE STATUS = 'ACTIVE'
-    """).to_pandas()
+    try:
+        return session.sql(f"""
+            SELECT 
+                SEGMENT_ID,
+                SOURCE_ASSET_ID,
+                TARGET_ASSET_ID,
+                STATUS
+            FROM {SCHEMA_PREFIX}.NETWORK_EDGES
+            WHERE STATUS = 'ACTIVE'
+        """).to_pandas()
+    except Exception as e:
+        st.error(f"Error loading network edges: {str(e)}")
+        return pd.DataFrame()
 
 assets_df = load_simulation_data()
 edges_df = load_network_edges()
@@ -214,7 +229,7 @@ edges_df = load_network_edges()
 # PRODUCTION SIMULATION - MAP SELECTION
 # =============================================================================
 
-st.markdown("### ⚡ Production Simulation")
+st.markdown("### Production Simulation")
 st.markdown("**Click an asset on the map or use the dropdown to select a source for simulation.**")
 
 # Get current selection
@@ -407,7 +422,7 @@ with asset_col1:
         current_idx = all_options.index(selected_asset_id)
     
     new_selection = st.selectbox(
-        "🎯 Select Source Asset (Well Pad)",
+        "Select Source Asset (Well Pad)",
         all_options,
         index=current_idx,
         help="Select a well pad to simulate production increase"
@@ -443,7 +458,7 @@ with asset_col2:
             </div>
             """, unsafe_allow_html=True)
     else:
-        st.info("👆 Select a well pad from the dropdown or click on the map to begin simulation")
+        st.info("Select a well pad from the dropdown or click on the map to begin simulation")
 
 # =============================================================================
 # SIMULATION CONTROLS
@@ -451,7 +466,7 @@ with asset_col2:
 
 if selected_asset_id:
     st.markdown("---")
-    st.markdown("#### 🔧 Simulation Parameters")
+    st.markdown("#### Simulation Parameters")
     
     sim_col1, sim_col2 = st.columns([2, 1])
     
@@ -466,75 +481,145 @@ if selected_asset_id:
     
     with sim_col2:
         st.markdown("<br>", unsafe_allow_html=True)
-        run_sim = st.button("🚀 Run Simulation", use_container_width=True, type="primary")
+        run_sim = st.button("Run Simulation", use_container_width=True, type="primary")
     
     # Run simulation
     if run_sim:
-        asset_info = assets_df[assets_df['ASSET_ID'] == selected_asset_id].iloc[0]
-        
-        # Simulate pressure impact
-        current_pressure = asset_info['AVG_PRESSURE_PSI'] if pd.notna(asset_info['AVG_PRESSURE_PSI']) else 500
-        # Simple linear model: pressure increases ~0.03 PSI per additional BOPD
-        projected_pressure = current_pressure + (production_increase * 0.03)
-        
-        # Find downstream assets
-        downstream = session.sql(f"""
-            SELECT 
-                e.TARGET_ASSET_ID,
-                a.MAX_PRESSURE_RATING_PSI,
-                a.ASSET_TYPE,
-                a.SOURCE_SYSTEM
-            FROM {SCHEMA_PREFIX}.NETWORK_EDGES e
-            JOIN {SCHEMA_PREFIX}.ASSET_MASTER a ON e.TARGET_ASSET_ID = a.ASSET_ID
-            WHERE e.SOURCE_ASSET_ID = '{selected_asset_id}'
-               OR e.SOURCE_ASSET_ID IN (
-                   SELECT TARGET_ASSET_ID FROM {SCHEMA_PREFIX}.NETWORK_EDGES WHERE SOURCE_ASSET_ID = '{selected_asset_id}'
-               )
-        """).to_pandas()
-        
-        # Check for pressure violations
-        violations = []
-        for _, row in downstream.iterrows():
-            if row['MAX_PRESSURE_RATING_PSI'] and projected_pressure > row['MAX_PRESSURE_RATING_PSI']:
-                violations.append({
-                    'asset': row['TARGET_ASSET_ID'],
-                    'type': row['ASSET_TYPE'],
-                    'system': row['SOURCE_SYSTEM'],
-                    'limit': row['MAX_PRESSURE_RATING_PSI'],
-                    'projected': projected_pressure
-                })
-        
-        # Display result
-        if violations:
-            st.markdown(f"""
-            <div class="simulation-result result-denied">
-                <strong style="color: #ef4444; font-size: 1.1rem;">❌ ROUTING DENIED</strong><br><br>
-                <span style="color: #e2e8f0;">Projected pressure <strong>{projected_pressure:.0f} PSI</strong> would exceed equipment limits:</span>
-            </div>
-            """, unsafe_allow_html=True)
+        try:
+            asset_info = assets_df[assets_df['ASSET_ID'] == selected_asset_id].iloc[0]
             
-            for v in violations:
-                st.error(f"**{v['asset']}** ({v['type']}): Limit {v['limit']:.0f} PSI < Projected {v['projected']:.0f} PSI")
+            # Simulate pressure impact
+            current_pressure = asset_info['AVG_PRESSURE_PSI'] if pd.notna(asset_info['AVG_PRESSURE_PSI']) else 500
+            # Simple linear model: pressure increases ~0.03 PSI per additional BOPD
+            projected_pressure = current_pressure + (production_increase * 0.03)
             
-            # Add to chat
-            add_simulation_result_to_chat(
-                "DENIED",
-                f"Adding {production_increase} BOPD from {selected_asset_id} was DENIED due to pressure violations on: {[v['asset'] for v in violations]}"
-            )
-        else:
-            st.markdown(f"""
-            <div class="simulation-result result-approved">
-                <strong style="color: #22c55e; font-size: 1.1rem;">✅ ROUTING APPROVED</strong><br><br>
-                <span style="color: #e2e8f0;">Projected pressure: <strong>{projected_pressure:.0f} PSI</strong></span><br>
-                <span style="color: #94a3b8;">All downstream assets within limits. {len(downstream)} assets checked.</span>
-            </div>
-            """, unsafe_allow_html=True)
+            # Find downstream assets using Recursive CTE for cascade analysis
+            with st.spinner("Simulating pressure propagation..."):
+                downstream = session.sql(f"""
+                    WITH RECURSIVE propagation AS (
+                        -- Base case
+                        SELECT 
+                            target_asset_id,
+                            length_miles as total_distance,
+                            1 as hops
+                        FROM {SCHEMA_PREFIX}.NETWORK_EDGES
+                        WHERE source_asset_id = '{selected_asset_id}' AND status = 'ACTIVE'
+                        
+                        UNION ALL
+                        
+                        -- Recursive step
+                        SELECT 
+                            e.target_asset_id,
+                            p.total_distance + e.length_miles,
+                            p.hops + 1
+                        FROM {SCHEMA_PREFIX}.NETWORK_EDGES e
+                        JOIN propagation p ON e.source_asset_id = p.target_asset_id
+                        WHERE e.status = 'ACTIVE' AND p.hops < 5
+                    )
+                    SELECT 
+                        p.target_asset_id,
+                        p.total_distance,
+                        p.hops,
+                        a.max_pressure_rating_psi,
+                        a.asset_type,
+                        a.source_system
+                    FROM propagation p
+                    LEFT JOIN {SCHEMA_PREFIX}.ASSET_MASTER a ON p.target_asset_id = a.asset_id
+                """).to_pandas()
+
+            # Calculate Time to Impact (assuming ~2 mins/mile for pressure wave)
+            if not downstream.empty:
+                downstream['TIME_TO_IMPACT_MIN'] = downstream['TOTAL_DISTANCE'] * 2
+            else:
+                downstream['TIME_TO_IMPACT_MIN'] = 0
             
-            # Add to chat
-            add_simulation_result_to_chat(
-                "APPROVED",
-                f"Adding {production_increase} BOPD from {selected_asset_id} was APPROVED. Projected pressure: {projected_pressure:.0f} PSI"
-            )
+            # Check for pressure violations
+            violations = []
+            downstream['VIOLATION'] = False
+            
+            for idx, row in downstream.iterrows():
+                limit = row['MAX_PRESSURE_RATING_PSI']
+                if pd.notna(limit) and projected_pressure > limit:
+                    violations.append({
+                        'asset': row['TARGET_ASSET_ID'],
+                        'type': row['ASSET_TYPE'],
+                        'system': row['SOURCE_SYSTEM'],
+                        'limit': limit,
+                        'projected': projected_pressure,
+                        'time': row['TIME_TO_IMPACT_MIN']
+                    })
+                    downstream.at[idx, 'VIOLATION'] = True
+            
+            # Display result
+            if violations:
+                st.markdown(f"""
+                <div class="simulation-result result-denied">
+                    <strong style="color: #ef4444; font-size: 1.1rem;">ROUTING DENIED</strong><br><br>
+                    <span style="color: #e2e8f0;">Projected pressure <strong>{projected_pressure:.0f} PSI</strong> would exceed equipment limits:</span>
+                </div>
+                """, unsafe_allow_html=True)
+                
+                for v in violations:
+                    st.error(f"**{v['asset']}** ({v['type']}): Limit {v['limit']:.0f} PSI < Projected {v['projected']:.0f} PSI (Impact in {v['time']:.1f} min)")
+                
+                # Add to chat
+                add_simulation_result_to_chat(
+                    "DENIED",
+                    f"Adding {production_increase} BOPD from {selected_asset_id} was DENIED due to pressure violations on: {[v['asset'] for v in violations]}"
+                )
+            else:
+                st.markdown(f"""
+                <div class="simulation-result result-approved">
+                    <strong style="color: #22c55e; font-size: 1.1rem;">ROUTING APPROVED</strong><br><br>
+                    <span style="color: #e2e8f0;">Projected pressure: <strong>{projected_pressure:.0f} PSI</strong></span><br>
+                    <span style="color: #94a3b8;">All downstream assets within limits. {len(downstream)} assets checked.</span>
+                </div>
+                """, unsafe_allow_html=True)
+                
+                # Add to chat
+                add_simulation_result_to_chat(
+                    "APPROVED",
+                    f"Adding {production_increase} BOPD from {selected_asset_id} was APPROVED. Projected pressure: {projected_pressure:.0f} PSI"
+                )
+
+            # Cascade Propagation Timeline
+            if not downstream.empty:
+                st.markdown("### Cascade Propagation Timeline")
+                
+                # Format data for Plotly
+                timeline_df = downstream.sort_values('TIME_TO_IMPACT_MIN', ascending=True)
+                timeline_df['Status'] = timeline_df['VIOLATION'].map({True: 'Violation', False: 'Safe'})
+                
+                fig = px.bar(
+                    timeline_df,
+                    x='TIME_TO_IMPACT_MIN',
+                    y='TARGET_ASSET_ID',
+                    orientation='h',
+                    color='Status',
+                    color_discrete_map={'Violation': '#ef4444', 'Safe': '#22c55e'},
+                    text='TOTAL_DISTANCE',
+                    title='Pressure Wave Propagation Time'
+                )
+                
+                fig.update_traces(
+                    texttemplate='%{text:.1f} miles',
+                    textposition='outside'
+                )
+                
+                fig.update_layout(
+                    paper_bgcolor='rgba(0,0,0,0)',
+                    plot_bgcolor='rgba(0,0,0,0)',
+                    font=dict(color='#94a3b8'),
+                    xaxis_title="Time to Impact (Minutes)",
+                    yaxis_title="Downstream Asset",
+                    yaxis=dict(categoryorder='total descending'),
+                    height=max(400, len(downstream) * 40)
+                )
+                
+                st.plotly_chart(fig, use_container_width=True)
+
+        except Exception as e:
+            st.error(f"Simulation failed: {str(e)}")
 
 # =============================================================================
 # CHAT PANEL (at bottom)
@@ -543,5 +628,5 @@ if selected_asset_id:
 if st.session_state.get('show_chat_panel', True):
     with st.container():
         st.markdown("---")
-        st.markdown("### 💬 AI Integration Assistant")
+        st.markdown("### AI Integration Assistant")
         render_chat_panel(session, SCHEMA_PREFIX, assets_df, panel_key="simulation")

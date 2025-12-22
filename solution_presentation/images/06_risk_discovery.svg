@@ -1,120 +1,84 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450">
-  <defs>
-    <linearGradient id="bgGrad6" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:#0f172a"/>
-      <stop offset="100%" style="stop-color:#1e293b"/>
-    </linearGradient>
-    <linearGradient id="riskGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-      <stop offset="0%" style="stop-color:#22c55e"/>
-      <stop offset="50%" style="stop-color:#f59e0b"/>
-      <stop offset="100%" style="stop-color:#ef4444"/>
-    </linearGradient>
-    <filter id="pulseGlow">
-      <feGaussianBlur stdDeviation="4" result="coloredBlur"/>
-      <feMerge>
-        <feMergeNode in="coloredBlur"/>
-        <feMergeNode in="SourceGraphic"/>
-      </feMerge>
-    </filter>
-  </defs>
-  
-  <!-- Background -->
-  <rect width="800" height="450" fill="url(#bgGrad6)" rx="12"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 400">
+  <!-- Background: Midnight / Dark Blue -->
+  <rect width="800" height="400" fill="#0D1B2A" rx="0"/>
   
   <!-- Title -->
-  <text x="400" y="35" text-anchor="middle" fill="#e2e8f0" font-family="system-ui" font-size="20" font-weight="600">The "Wow" Moment: Discovering Hidden Risk</text>
+  <text x="400" y="35" text-anchor="middle" fill="#E2E8F0" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="600">The "Wow" Moment: Finding the Hidden Risk</text>
   
-  <!-- Network Diagram (Left Side) -->
-  <g transform="translate(30, 60)">
-    <text x="175" y="20" text-anchor="middle" fill="#64748b" font-family="system-ui" font-size="11" text-transform="uppercase" letter-spacing="1">Network Topology</text>
-    
-    <!-- SnowCore Cluster -->
-    <rect x="0" y="35" width="180" height="160" rx="10" fill="#0ea5e910" stroke="#0ea5e9" stroke-width="1" stroke-dasharray="4,2"/>
-    <text x="90" y="55" text-anchor="middle" fill="#0ea5e9" font-family="system-ui" font-size="10" font-weight="500">SNOWCORE ZONE</text>
-    
-    <!-- SC-PAD-42 -->
-    <circle cx="90" cy="90" r="25" fill="#0ea5e9" stroke="#0ea5e9" stroke-width="2"/>
-    <text x="90" y="87" text-anchor="middle" fill="#0f172a" font-family="system-ui" font-size="8" font-weight="600">SC-PAD-42</text>
-    <text x="90" y="97" text-anchor="middle" fill="#0f172a" font-family="monospace" font-size="7">1500 PSI</text>
-    
-    <!-- SC-SEP-101 -->
-    <circle cx="90" cy="160" r="22" fill="#0ea5e9" stroke="#0ea5e9" stroke-width="2"/>
-    <text x="90" y="157" text-anchor="middle" fill="#0f172a" font-family="system-ui" font-size="8" font-weight="600">SC-SEP-101</text>
-    <text x="90" y="167" text-anchor="middle" fill="#0f172a" font-family="monospace" font-size="7">1440 PSI</text>
-    
-    <!-- Connection within SnowCore -->
-    <line x1="90" y1="118" x2="90" y2="136" stroke="#0ea5e9" stroke-width="3"/>
-    <text x="105" y="130" fill="#64748b" font-family="system-ui" font-size="8">PIPE-01</text>
-    
-    <!-- TeraField Cluster -->
-    <rect x="190" y="35" width="180" height="160" rx="10" fill="#f43f5e10" stroke="#f43f5e" stroke-width="1" stroke-dasharray="4,2"/>
-    <text x="280" y="55" text-anchor="middle" fill="#f43f5e" font-family="system-ui" font-size="10" font-weight="500">TERAFIELD ZONE</text>
-    
-    <!-- TF-V-204 - THE RISK! -->
-    <circle cx="280" cy="110" r="28" fill="#ef4444" stroke="#ef4444" stroke-width="3" filter="url(#pulseGlow)"/>
-    <text x="280" y="107" text-anchor="middle" fill="#fff" font-family="system-ui" font-size="9" font-weight="700">TF-V-204</text>
-    <text x="280" y="118" text-anchor="middle" fill="#fecaca" font-family="monospace" font-size="7">⚠️ 600 PSI</text>
-    
-    <!-- TF-VALVE-101 -->
-    <circle cx="280" cy="170" r="18" fill="#f43f5e" stroke="#f43f5e" stroke-width="2"/>
-    <text x="280" y="167" text-anchor="middle" fill="#0f172a" font-family="system-ui" font-size="7" font-weight="600">TF-VALVE</text>
-    <text x="280" y="177" text-anchor="middle" fill="#0f172a" font-family="monospace" font-size="6">550 PSI</text>
-    
-    <!-- Hidden Link - The Discovery! -->
-    <line x1="114" y1="155" x2="250" y2="115" stroke="#a855f7" stroke-width="3" stroke-dasharray="8,4"/>
-    <text x="180" y="125" fill="#a855f7" font-family="system-ui" font-size="9" font-weight="600">PIPE-88</text>
-    <text x="180" y="138" fill="#a855f7" font-family="system-ui" font-size="8">⚡ AutoGL Discovered</text>
-    
-    <!-- Connection within TeraField -->
-    <line x1="280" y1="140" x2="280" y2="150" stroke="#f43f5e" stroke-width="3"/>
+  <!-- Step 1: User Action -->
+  <g transform="translate(50, 80)">
+    <rect x="0" y="0" width="200" height="60" rx="8" fill="#1E293B" stroke="#29B5E8" stroke-width="1"/>
+    <text x="20" y="25" fill="#29B5E8" font-family="system-ui" font-size="11" font-weight="600">User Query</text>
+    <text x="20" y="45" fill="#E2E8F0" font-family="system-ui" font-size="12">"Route +5k bbl to Hub?"</text>
   </g>
   
-  <!-- Analysis Steps (Right Side) -->
-  <g transform="translate(420, 60)">
-    <text x="180" y="20" text-anchor="middle" fill="#64748b" font-family="system-ui" font-size="11" text-transform="uppercase" letter-spacing="1">AI Analysis Flow</text>
+  <!-- Arrow Down -->
+  <path d="M 150 140 L 150 170" stroke="#64748B" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+  
+  <!-- Step 2: AutoGL Prediction (The Discovery) -->
+  <g transform="translate(50, 180)">
+    <rect x="0" y="0" width="200" height="180" rx="8" fill="#1E293B" stroke="#A855F7" stroke-width="2"/>
+    <text x="20" y="30" fill="#A855F7" font-family="system-ui" font-size="14" font-weight="700">1. AutoGL Discovery</text>
     
-    <!-- User Query -->
-    <rect x="0" y="35" width="350" height="45" rx="8" fill="#1e293b" stroke="#06b6d4" stroke-width="1"/>
-    <text x="20" y="55" fill="#06b6d4" font-family="system-ui" font-size="10">💬 User Query:</text>
-    <text x="20" y="72" fill="#e2e8f0" font-family="system-ui" font-size="11" font-style="italic">"Can I route 5,000 extra barrels through Midland Hub?"</text>
+    <!-- Mini Graph -->
+    <circle cx="50" cy="80" r="10" fill="#29B5E8"/> <!-- SnowCore Node -->
+    <text x="40" y="105" fill="#29B5E8" font-size="9">PAD-42</text>
     
-    <!-- Step 1: AutoGL -->
-    <rect x="0" y="90" width="350" height="50" rx="8" fill="#22c55e10" stroke="#22c55e" stroke-width="1"/>
-    <circle cx="25" cy="115" r="12" fill="#22c55e20" stroke="#22c55e" stroke-width="1"/>
-    <text x="25" y="119" text-anchor="middle" fill="#22c55e" font-family="monospace" font-size="10" font-weight="700">1</text>
-    <text x="45" y="108" fill="#22c55e" font-family="system-ui" font-size="10" font-weight="600">AutoGL Link Prediction</text>
-    <text x="45" y="123" fill="#94a3b8" font-family="system-ui" font-size="9">Discovers hidden edge: SC-SEP-101 → TF-V-204</text>
-    <text x="45" y="135" fill="#64748b" font-family="system-ui" font-size="8">Confidence: 0.94</text>
+    <circle cx="150" cy="80" r="10" fill="#EF4444"/> <!-- TeraField Node -->
+    <text x="135" y="105" fill="#EF4444" font-size="9">TF-V-204</text>
     
-    <!-- Step 2: Cortex Search -->
-    <rect x="0" y="150" width="350" height="50" rx="8" fill="#a855f710" stroke="#a855f7" stroke-width="1"/>
-    <circle cx="25" cy="175" r="12" fill="#a855f720" stroke="#a855f7" stroke-width="1"/>
-    <text x="25" y="179" text-anchor="middle" fill="#a855f7" font-family="monospace" font-size="10" font-weight="700">2</text>
-    <text x="45" y="168" fill="#a855f7" font-family="system-ui" font-size="10" font-weight="600">Cortex Search (P&amp;ID Extraction)</text>
-    <text x="45" y="183" fill="#94a3b8" font-family="system-ui" font-size="9">Finds: "V-204 MAWP: 600 PSIG" from TeraField P&amp;ID</text>
-    <text x="45" y="195" fill="#64748b" font-family="system-ui" font-size="8">Source: TeraField_Midland_Hub_Process_Flow.pdf</text>
+    <!-- The Hidden Link -->
+    <line x1="60" y1="80" x2="140" y2="80" stroke="#A855F7" stroke-width="3" stroke-dasharray="6,3"/>
+    <text x="100" y="70" text-anchor="middle" fill="#A855F7" font-size="10" font-weight="bold">NEW EDGE</text>
     
-    <!-- Step 3: Pressure Calc -->
-    <rect x="0" y="210" width="350" height="50" rx="8" fill="#f59e0b10" stroke="#f59e0b" stroke-width="1"/>
-    <circle cx="25" cy="235" r="12" fill="#f59e0b20" stroke="#f59e0b" stroke-width="1"/>
-    <text x="25" y="239" text-anchor="middle" fill="#f59e0b" font-family="monospace" font-size="10" font-weight="700">3</text>
-    <text x="45" y="228" fill="#f59e0b" font-family="system-ui" font-size="10" font-weight="600">Pressure Propagation Model</text>
-    <text x="45" y="243" fill="#94a3b8" font-family="system-ui" font-size="9">Calculates: +5k BOPD → 800 PSI at TF-V-204</text>
-    <text x="45" y="255" fill="#64748b" font-family="system-ui" font-size="8">Based on: Flow dynamics + pipe characteristics</text>
-    
-    <!-- Final Verdict -->
-    <rect x="0" y="275" width="350" height="75" rx="10" fill="#ef444420" stroke="#ef4444" stroke-width="2"/>
-    <text x="175" y="300" text-anchor="middle" fill="#ef4444" font-family="system-ui" font-size="14" font-weight="700">🚫 ROUTING DENIED</text>
-    <text x="175" y="320" text-anchor="middle" fill="#fecaca" font-family="system-ui" font-size="10">Projected pressure (800 PSI) exceeds</text>
-    <text x="175" y="335" text-anchor="middle" fill="#fecaca" font-family="system-ui" font-size="10">TF-V-204 safety rating (600 PSI)</text>
+    <text x="20" y="140" fill="#E2E8F0" font-size="11">"Probability: 98%"</text>
+    <text x="20" y="155" fill="#E2E8F0" font-size="11">"Dependency found"</text>
   </g>
   
-  <!-- Bottom Insight Box -->
-  <g transform="translate(30, 380)">
-    <rect x="0" y="0" width="740" height="55" rx="8" fill="#22c55e10" stroke="#22c55e" stroke-width="1"/>
-    <text x="20" y="22" fill="#22c55e" font-family="system-ui" font-size="12" font-weight="600">💡 Key Insight</text>
-    <text x="20" y="42" fill="#cbd5e1" font-family="system-ui" font-size="11">Without AutoGL, this risk was invisible. The cross-network connection via PIPE-88 was not documented</text>
-    <text x="20" y="55" fill="#cbd5e1" font-family="system-ui" font-size="11">in either SnowCore's SAP or TeraField's Maximo asset registry. The GNN learned it from telemetry patterns.</text>
+  <!-- Arrow Right -->
+  <path d="M 250 270 L 290 270" stroke="#64748B" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+  
+  <!-- Step 3: Cortex Search (The Context) -->
+  <g transform="translate(290, 180)">
+    <rect x="0" y="0" width="200" height="180" rx="8" fill="#1E293B" stroke="#22C55E" stroke-width="1"/>
+    <text x="20" y="30" fill="#22C55E" font-family="system-ui" font-size="14" font-weight="700">2. Cortex Search</text>
+    
+    <!-- Doc Icon -->
+    <rect x="20" y="50" width="30" height="40" fill="#E2E8F0" rx="2"/>
+    <text x="25" y="75" font-size="20"></text>
+    
+    <!-- Extracted Text -->
+    <text x="60" y="60" fill="#E2E8F0" font-size="11" font-weight="bold">P&amp;ID_7402.pdf</text>
+    <text x="60" y="80" fill="#94A3B8" font-size="10">"Model: Fisher V200"</text>
+    <rect x="60" y="90" width="100" height="20" fill="#EF444420"/>
+    <text x="65" y="103" fill="#EF4444" font-size="11" font-weight="bold">MAWP: 600 PSI</text>
   </g>
-</svg>
+  
+  <!-- Arrow Right -->
+  <path d="M 490 270 L 530 270" stroke="#64748B" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+  
+  <!-- Step 4: Decision (The Value) -->
+  <g transform="translate(530, 180)">
+    <rect x="0" y="0" width="220" height="180" rx="8" fill="#1E293B" stroke="#EF4444" stroke-width="2"/>
+    <text x="20" y="30" fill="#EF4444" font-family="system-ui" font-size="14" font-weight="700">3. Risk Verdict</text>
+    
+    <!-- Calculation -->
+    <text x="20" y="70" fill="#94A3B8" font-size="11">Projected Pressure:</text>
+    <text x="150" y="70" fill="#E2E8F0" font-size="11" font-weight="bold">800 PSI</text>
+    
+    <text x="20" y="90" fill="#94A3B8" font-size="11">Asset Limit:</text>
+    <text x="150" y="90" fill="#EF4444" font-size="11" font-weight="bold">600 PSI</text>
+    
+    <line x1="20" y1="110" x2="200" y2="110" stroke="#334155" stroke-width="1"/>
+    
+    <text x="110" y="140" text-anchor="middle" fill="#EF4444" font-size="16" font-weight="bold">ACTION BLOCKED</text>
+    <text x="110" y="160" text-anchor="middle" fill="#E2E8F0" font-size="10">Prevented potential failure</text>
+  </g>
 
+  <!-- Defs -->
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#64748B"/>
+    </marker>
+  </defs>
+</svg>

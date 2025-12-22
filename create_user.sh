@@ -64,25 +64,43 @@ BLUE='\033[0;34m'
 NC='\033[0m'
 
 ###############################################################################
-# Auto-detect project configuration from deploy.sh
+# Auto-detect project configuration
 ###############################################################################
 
-# Defaults (will be overridden by deploy.sh if present)
+# Defaults
 DEFAULT_CONNECTION_NAME="demo"
 DEFAULT_PROJECT_PREFIX=""
 DEFAULT_ENV_PREFIX=""
 
-# Try to read project settings from deploy.sh
-if [ -f "$SCRIPT_DIR/deploy.sh" ]; then
-    # Extract PROJECT_PREFIX from deploy.sh
-    DETECTED_PROJECT_PREFIX=$(grep -E '^PROJECT_PREFIX=' "$SCRIPT_DIR/deploy.sh" 2>/dev/null | head -1 | sed 's/PROJECT_PREFIX=["'"'"']*\([^"'"'"']*\)["'"'"']*/\1/')
-    if [ -n "$DETECTED_PROJECT_PREFIX" ]; then
-        DEFAULT_PROJECT_PREFIX="$DETECTED_PROJECT_PREFIX"
+# Read project name from .cursor/PROJECT_NAME.md (primary source)
+PROJECT_NAME_FILE="${SCRIPT_DIR}/.cursor/PROJECT_NAME.md"
+DIR_BASENAME=$(basename "$SCRIPT_DIR")
+
+if [ -f "$PROJECT_NAME_FILE" ]; then
+    PROJECT_NAME=$(head -1 "$PROJECT_NAME_FILE" | tr -d '[:space:]')
+    if [ -n "$PROJECT_NAME" ]; then
+        # Convert to uppercase for Snowflake naming
+        DEFAULT_PROJECT_PREFIX=$(echo "$PROJECT_NAME" | tr '[:lower:]' '[:upper:]')
     fi
-    
-    # Extract default connection from deploy.sh (supports both CONNECTION= and CONNECTION_NAME=)
-    # First try to extract the value, handling both quoted and unquoted forms
-    DETECTED_CONNECTION=$(grep -E '^CONNECTION(_NAME)?=' "$SCRIPT_DIR/deploy.sh" 2>/dev/null | head -1 | sed -E 's/^CONNECTION(_NAME)?=["'"'"']?([^"'"'"']+)["'"'"']?.*$/\2/')
+fi
+
+# Validate project name
+if [ -z "$DEFAULT_PROJECT_PREFIX" ]; then
+    echo -e "${YELLOW}[WARN] .cursor/PROJECT_NAME.md not found or empty${NC}"
+    echo "Using directory name: $DIR_BASENAME"
+    read -p "Continue? (yes/no): " CONFIRM
+    [ "$CONFIRM" != "yes" ] && exit 1
+    DEFAULT_PROJECT_PREFIX=$(echo "$DIR_BASENAME" | tr '[:lower:]' '[:upper:]')
+    PROJECT_NAME="$DIR_BASENAME"
+elif [ "$PROJECT_NAME" != "$DIR_BASENAME" ]; then
+    echo -e "${YELLOW}[WARN] Project name '$PROJECT_NAME' differs from directory '$DIR_BASENAME'${NC}"
+    read -p "Continue with '$PROJECT_NAME'? (yes/no): " CONFIRM
+    [ "$CONFIRM" != "yes" ] && exit 1
+fi
+
+# Try to read connection from deploy.sh
+if [ -f "$SCRIPT_DIR/deploy.sh" ]; then
+    DETECTED_CONNECTION=$(grep -E '^CONNECTION=' "$SCRIPT_DIR/deploy.sh" 2>/dev/null | head -1 | sed 's/CONNECTION=["'"'"']*\([^"'"'"']*\)["'"'"']*/\1/')
     if [ -n "$DETECTED_CONNECTION" ]; then
         DEFAULT_CONNECTION_NAME="$DETECTED_CONNECTION"
     fi
@@ -325,29 +343,9 @@ if [ "$SHOW_CONFIG" = true ]; then
     echo "  Warehouse:      $SNOWFLAKE_WAREHOUSE"
     if [ -n "$COMPUTE_POOL_NAME" ]; then
         echo "  Compute Pool:   $COMPUTE_POOL_NAME"
-        echo "  Ext Access:     ${FULL_PREFIX}_EXTERNAL_ACCESS"
     fi
     if [ -n "$ENV_PREFIX" ]; then
         echo "  Env Prefix:     $ENV_PREFIX"
-    fi
-    echo ""
-    echo "Grants that will be applied:"
-    echo "  - Role membership (${SNOWFLAKE_ROLE})"
-    echo "  - Warehouse usage"
-    echo "  - Database/Schema access"
-    echo "  - Tables, Views, Stages (SELECT/READ)"
-    echo "  - Functions, Procedures (USAGE)"
-    echo "  - Streamlit apps (USAGE)"
-    echo "  - Cortex LLM access (SNOWFLAKE.CORTEX_USER)"
-    echo ""
-    echo "Optional grants (applied individually if they exist):"
-    echo "  - Semantic Model: ${FULL_PREFIX}_ANALYTICS_VIEW"
-    echo "  - Cortex Search Service: ${FULL_PREFIX}_DOCS_SEARCH"
-    echo "  - Cortex Agent: ${FULL_PREFIX}_AGENT"
-    echo "  - Notebook: ${FULL_PREFIX}_NOTEBOOK"
-    if [ -n "$COMPUTE_POOL_NAME" ]; then
-        echo "  - Compute Pool: ${COMPUTE_POOL_NAME}"
-        echo "  - External Access: ${FULL_PREFIX}_EXTERNAL_ACCESS"
     fi
     echo ""
     echo "Override any value with CLI options. Use --help for details."
@@ -461,12 +459,9 @@ if [ -n "$LAST_NAME" ]; then
     USER_OPTIONS="${USER_OPTIONS} LAST_NAME = '${LAST_NAME}'"
 fi
 
-# Build compute pool and external access grants if specified
+# Build compute pool grants if specified
 COMPUTE_POOL_GRANTS=""
-EXTERNAL_ACCESS_NAME=""
 if [ -n "$COMPUTE_POOL_NAME" ]; then
-    # Derive external access integration name from the same prefix pattern
-    EXTERNAL_ACCESS_NAME="${FULL_PREFIX}_EXTERNAL_ACCESS"
     COMPUTE_POOL_GRANTS="
 -- ============================================================
 -- GRANT COMPUTE POOL ACCESS (for notebook execution)
@@ -578,13 +573,6 @@ GRANT DATABASE ROLE SNOWFLAKE.CORTEX_USER TO ROLE ${SNOWFLAKE_ROLE};
 GRANT USAGE ON ALL FILE FORMATS IN SCHEMA ${SNOWFLAKE_DATABASE}.${SNOWFLAKE_SCHEMA} TO ROLE ${SNOWFLAKE_ROLE};
 
 -- ============================================================
--- 12. GRANT PROCEDURE ACCESS
--- ============================================================
-
-GRANT USAGE ON ALL PROCEDURES IN SCHEMA ${SNOWFLAKE_DATABASE}.${SNOWFLAKE_SCHEMA} TO ROLE ${SNOWFLAKE_ROLE};
-GRANT USAGE ON FUTURE PROCEDURES IN SCHEMA ${SNOWFLAKE_DATABASE}.${SNOWFLAKE_SCHEMA} TO ROLE ${SNOWFLAKE_ROLE};
-
--- ============================================================
 -- VERIFICATION
 -- ============================================================
 
@@ -626,61 +614,8 @@ echo "------------------------------------------------"
 
 # Execute the SQL
 snow sql -c "$CONNECTION_NAME" -q "$SQL_SCRIPT"
-MAIN_SQL_RESULT=$?
 
-# Grant optional resources that may not exist in all deployments
-if [ $MAIN_SQL_RESULT -eq 0 ]; then
-    echo ""
-    echo "Granting optional Cortex and integration resources..."
-    
-    # Grant Semantic Model / View (uses project naming convention)
-    SEMANTIC_MODEL_NAME="${FULL_PREFIX}_ANALYTICS_VIEW"
-    snow sql -c "$CONNECTION_NAME" -q "GRANT USAGE ON SEMANTIC MODEL ${SNOWFLAKE_DATABASE}.${SNOWFLAKE_SCHEMA}.${SEMANTIC_MODEL_NAME} TO ROLE ${SNOWFLAKE_ROLE};" 2>/dev/null
-    if [ $? -eq 0 ]; then
-        echo -e "${GREEN}[OK]${NC} Semantic Model granted: ${SEMANTIC_MODEL_NAME}"
-    else
-        echo -e "${YELLOW}[SKIP]${NC} Semantic Model not found or already granted"
-    fi
-    
-    # Grant Cortex Search Service (uses project naming convention)
-    SEARCH_SERVICE_NAME="${FULL_PREFIX}_DOCS_SEARCH"
-    snow sql -c "$CONNECTION_NAME" -q "GRANT USAGE ON CORTEX SEARCH SERVICE ${SNOWFLAKE_DATABASE}.${SNOWFLAKE_SCHEMA}.${SEARCH_SERVICE_NAME} TO ROLE ${SNOWFLAKE_ROLE};" 2>/dev/null
-    if [ $? -eq 0 ]; then
-        echo -e "${GREEN}[OK]${NC} Cortex Search Service granted: ${SEARCH_SERVICE_NAME}"
-    else
-        echo -e "${YELLOW}[SKIP]${NC} Cortex Search Service not found or already granted"
-    fi
-    
-    # Grant Cortex Agent (uses project naming convention)
-    AGENT_NAME="${FULL_PREFIX}_AGENT"
-    snow sql -c "$CONNECTION_NAME" -q "GRANT USAGE ON CORTEX AGENT ${SNOWFLAKE_DATABASE}.${SNOWFLAKE_SCHEMA}.${AGENT_NAME} TO ROLE ${SNOWFLAKE_ROLE};" 2>/dev/null
-    if [ $? -eq 0 ]; then
-        echo -e "${GREEN}[OK]${NC} Cortex Agent granted: ${AGENT_NAME}"
-    else
-        echo -e "${YELLOW}[SKIP]${NC} Cortex Agent not found or already granted"
-    fi
-    
-    # Grant Notebook (uses project naming convention)
-    NOTEBOOK_NAME="${FULL_PREFIX}_NOTEBOOK"
-    snow sql -c "$CONNECTION_NAME" -q "GRANT USAGE ON NOTEBOOK ${SNOWFLAKE_DATABASE}.${SNOWFLAKE_SCHEMA}.${NOTEBOOK_NAME} TO ROLE ${SNOWFLAKE_ROLE};" 2>/dev/null
-    if [ $? -eq 0 ]; then
-        echo -e "${GREEN}[OK]${NC} Notebook granted: ${NOTEBOOK_NAME}"
-    else
-        echo -e "${YELLOW}[SKIP]${NC} Notebook not found or already granted"
-    fi
-    
-    # Grant external access integration if compute pool exists
-    if [ -n "$EXTERNAL_ACCESS_NAME" ]; then
-        snow sql -c "$CONNECTION_NAME" -q "GRANT USAGE ON INTEGRATION ${EXTERNAL_ACCESS_NAME} TO ROLE ${SNOWFLAKE_ROLE};" 2>/dev/null
-        if [ $? -eq 0 ]; then
-            echo -e "${GREEN}[OK]${NC} External Access Integration granted"
-        else
-            echo -e "${YELLOW}[SKIP]${NC} External Access Integration not found or already granted"
-        fi
-    fi
-fi
-
-if [ $MAIN_SQL_RESULT -eq 0 ]; then
+if [ $? -eq 0 ]; then
     echo ""
     echo "=================================================="
     if [ "$USER_EXISTS" = true ]; then
@@ -740,9 +675,6 @@ if [ $MAIN_SQL_RESULT -eq 0 ]; then
     echo "  Warehouse:          ${SNOWFLAKE_WAREHOUSE}"
     if [ -n "$COMPUTE_POOL_NAME" ]; then
         echo "  Compute Pool:       ${COMPUTE_POOL_NAME}"
-    fi
-    if [ -n "$EXTERNAL_ACCESS_NAME" ]; then
-        echo "  External Access:    ${EXTERNAL_ACCESS_NAME}"
     fi
     echo ""
     echo "QUICK START SQL"

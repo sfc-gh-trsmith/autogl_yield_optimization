@@ -1,77 +1,74 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 320">
-  <defs>
-    <linearGradient id="bgGrad2" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:#0f172a"/>
-      <stop offset="100%" style="stop-color:#1e293b"/>
-    </linearGradient>
-    <linearGradient id="successGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-      <stop offset="0%" style="stop-color:#22c55e"/>
-      <stop offset="100%" style="stop-color:#16a34a"/>
-    </linearGradient>
-  </defs>
-  
-  <!-- Background -->
-  <rect width="800" height="320" fill="url(#bgGrad2)" rx="12"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 400">
+  <!-- Background: Midnight / Dark Blue -->
+  <rect width="800" height="400" fill="#0D1B2A" rx="0"/>
   
   <!-- Title -->
-  <text x="400" y="40" text-anchor="middle" fill="#e2e8f0" font-family="system-ui" font-size="20" font-weight="600">Business Outcomes</text>
+  <text x="400" y="40" text-anchor="middle" fill="#E2E8F0" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="600">Business Value &amp; ROI</text>
   
-  <!-- KPI Cards -->
-  <!-- Card 1: Synergy -->
-  <g transform="translate(40, 70)">
-    <rect x="0" y="0" width="170" height="200" rx="12" fill="#1e293b" stroke="#06b6d4" stroke-width="2"/>
-    <rect x="0" y="0" width="170" height="8" rx="12" fill="#06b6d4"/>
-    <text x="85" y="50" text-anchor="middle" fill="#06b6d4" font-family="monospace" font-size="32" font-weight="700">$500M</text>
-    <text x="85" y="75" text-anchor="middle" fill="#94a3b8" font-family="system-ui" font-size="11" text-transform="uppercase" letter-spacing="1">Synergy Target</text>
-    <line x1="20" y1="95" x2="150" y2="95" stroke="#334155" stroke-width="1"/>
-    <text x="85" y="120" text-anchor="middle" fill="#cbd5e1" font-family="system-ui" font-size="11">Optimize routing</text>
-    <text x="85" y="137" text-anchor="middle" fill="#cbd5e1" font-family="system-ui" font-size="11">across combined</text>
-    <text x="85" y="154" text-anchor="middle" fill="#cbd5e1" font-family="system-ui" font-size="11">network without</text>
-    <text x="85" y="171" text-anchor="middle" fill="#cbd5e1" font-family="system-ui" font-size="11">new infrastructure</text>
+  <!-- Card 1: Synergies (Money/Growth) - Green/Success -->
+  <g transform="translate(40, 100)">
+    <rect x="0" y="0" width="160" height="220" rx="8" fill="#1E293B" stroke="#22C55E" stroke-width="2"/>
+    
+    <!-- Icon Circle -->
+    <circle cx="80" cy="50" r="30" fill="#22C55E20"/>
+    <text x="80" y="60" text-anchor="middle" font-size="30"></text>
+    
+    <!-- Metric -->
+    <text x="80" y="110" text-anchor="middle" fill="#22C55E" font-family="system-ui, sans-serif" font-size="28" font-weight="700">$500M</text>
+    
+    <!-- Label -->
+    <text x="80" y="140" text-anchor="middle" fill="#E2E8F0" font-family="system-ui, sans-serif" font-size="14" font-weight="600">Synergy Capture</text>
+    
+    <!-- Subtext -->
+    <text x="80" y="170" text-anchor="middle" fill="#94A3B8" font-family="system-ui, sans-serif" font-size="10">Optimized routing</text>
+    <text x="80" y="185" text-anchor="middle" fill="#94A3B8" font-family="system-ui, sans-serif" font-size="10">without new pipe</text>
   </g>
   
-  <!-- Card 2: Deferment -->
-  <g transform="translate(230, 70)">
-    <rect x="0" y="0" width="170" height="200" rx="12" fill="#1e293b" stroke="#22c55e" stroke-width="2"/>
-    <rect x="0" y="0" width="170" height="8" rx="12" fill="#22c55e"/>
-    <text x="85" y="50" text-anchor="middle" fill="#22c55e" font-family="monospace" font-size="32" font-weight="700">-15%</text>
-    <text x="85" y="75" text-anchor="middle" fill="#94a3b8" font-family="system-ui" font-size="11" text-transform="uppercase" letter-spacing="1">Deferment</text>
-    <line x1="20" y1="95" x2="150" y2="95" stroke="#334155" stroke-width="1"/>
-    <text x="85" y="120" text-anchor="middle" fill="#cbd5e1" font-family="system-ui" font-size="11">Predict pressure</text>
-    <text x="85" y="137" text-anchor="middle" fill="#cbd5e1" font-family="system-ui" font-size="11">bottlenecks at</text>
-    <text x="85" y="154" text-anchor="middle" fill="#cbd5e1" font-family="system-ui" font-size="11">SnowCore/TeraField</text>
-    <text x="85" y="171" text-anchor="middle" fill="#cbd5e1" font-family="system-ui" font-size="11">interfaces</text>
+  <!-- Card 2: Deferment (Efficiency) - Blue/Primary -->
+  <g transform="translate(220, 100)">
+    <rect x="0" y="0" width="160" height="220" rx="8" fill="#1E293B" stroke="#29B5E8" stroke-width="2"/>
+    
+    <circle cx="80" cy="50" r="30" fill="#29B5E820"/>
+    <text x="80" y="60" text-anchor="middle" font-size="30"></text>
+    
+    <text x="80" y="110" text-anchor="middle" fill="#29B5E8" font-family="system-ui, sans-serif" font-size="28" font-weight="700">15%</text>
+    
+    <text x="80" y="140" text-anchor="middle" fill="#E2E8F0" font-family="system-ui, sans-serif" font-size="14" font-weight="600">Less Deferment</text>
+    
+    <text x="80" y="170" text-anchor="middle" fill="#94A3B8" font-family="system-ui, sans-serif" font-size="10">Predicting bottlenecks</text>
+    <text x="80" y="185" text-anchor="middle" fill="#94A3B8" font-family="system-ui, sans-serif" font-size="10">before they happen</text>
   </g>
   
-  <!-- Card 3: Decision Speed -->
-  <g transform="translate(420, 70)">
-    <rect x="0" y="0" width="170" height="200" rx="12" fill="#1e293b" stroke="#a855f7" stroke-width="2"/>
-    <rect x="0" y="0" width="170" height="8" rx="12" fill="#a855f7"/>
-    <text x="85" y="50" text-anchor="middle" fill="#a855f7" font-family="monospace" font-size="32" font-weight="700">&lt;1s</text>
-    <text x="85" y="75" text-anchor="middle" fill="#94a3b8" font-family="system-ui" font-size="11" text-transform="uppercase" letter-spacing="1">Doc Retrieval</text>
-    <line x1="20" y1="95" x2="150" y2="95" stroke="#334155" stroke-width="1"/>
-    <text x="85" y="120" text-anchor="middle" fill="#cbd5e1" font-family="system-ui" font-size="11">Instant access to</text>
-    <text x="85" y="137" text-anchor="middle" fill="#cbd5e1" font-family="system-ui" font-size="11">legacy equipment</text>
-    <text x="85" y="154" text-anchor="middle" fill="#cbd5e1" font-family="system-ui" font-size="11">specs via AI</text>
-    <text x="85" y="171" text-anchor="middle" fill="#cbd5e1" font-family="system-ui" font-size="11">document search</text>
+  <!-- Card 3: Speed (Time) - Purple/AI -->
+  <g transform="translate(400, 100)">
+    <rect x="0" y="0" width="160" height="220" rx="8" fill="#1E293B" stroke="#A855F7" stroke-width="2"/>
+    
+    <circle cx="80" cy="50" r="30" fill="#A855F720"/>
+    <text x="80" y="60" text-anchor="middle" font-size="30"></text>
+    
+    <text x="80" y="110" text-anchor="middle" fill="#A855F7" font-family="system-ui, sans-serif" font-size="28" font-weight="700">&lt; 1 sec</text>
+    
+    <text x="80" y="140" text-anchor="middle" fill="#E2E8F0" font-family="system-ui, sans-serif" font-size="14" font-weight="600">Doc Retrieval</text>
+    
+    <text x="80" y="170" text-anchor="middle" fill="#94A3B8" font-family="system-ui, sans-serif" font-size="10">Finding legacy specs</text>
+    <text x="80" y="185" text-anchor="middle" fill="#94A3B8" font-family="system-ui, sans-serif" font-size="10">via Cortex Search</text>
   </g>
   
-  <!-- Card 4: Safety -->
-  <g transform="translate(610, 70)">
-    <rect x="0" y="0" width="170" height="200" rx="12" fill="#1e293b" stroke="#f59e0b" stroke-width="2"/>
-    <rect x="0" y="0" width="170" height="8" rx="12" fill="#f59e0b"/>
-    <text x="85" y="50" text-anchor="middle" fill="#f59e0b" font-family="monospace" font-size="32" font-weight="700">Zero</text>
-    <text x="85" y="75" text-anchor="middle" fill="#94a3b8" font-family="system-ui" font-size="11" text-transform="uppercase" letter-spacing="1">PSI Incidents</text>
-    <line x1="20" y1="95" x2="150" y2="95" stroke="#334155" stroke-width="1"/>
-    <text x="85" y="120" text-anchor="middle" fill="#cbd5e1" font-family="system-ui" font-size="11">Prevent pressure</text>
-    <text x="85" y="137" text-anchor="middle" fill="#cbd5e1" font-family="system-ui" font-size="11">mismatch failures</text>
-    <text x="85" y="154" text-anchor="middle" fill="#cbd5e1" font-family="system-ui" font-size="11">via proactive</text>
-    <text x="85" y="171" text-anchor="middle" fill="#cbd5e1" font-family="system-ui" font-size="11">simulation</text>
+  <!-- Card 4: Safety (Risk) - Orange/Warning -->
+  <g transform="translate(580, 100)">
+    <rect x="0" y="0" width="160" height="220" rx="8" fill="#1E293B" stroke="#F59E0B" stroke-width="2"/>
+    
+    <circle cx="80" cy="50" r="30" fill="#F59E0B20"/>
+    <text x="80" y="60" text-anchor="middle" font-size="30"></text>
+    
+    <text x="80" y="110" text-anchor="middle" fill="#F59E0B" font-family="system-ui, sans-serif" font-size="28" font-weight="700">ZERO</text>
+    
+    <text x="80" y="140" text-anchor="middle" fill="#E2E8F0" font-family="system-ui, sans-serif" font-size="14" font-weight="600">Mismatch Incidents</text>
+    
+    <text x="80" y="170" text-anchor="middle" fill="#94A3B8" font-family="system-ui, sans-serif" font-size="10">Proactive simulation</text>
+    <text x="80" y="185" text-anchor="middle" fill="#94A3B8" font-family="system-ui, sans-serif" font-size="10">prevents failure</text>
   </g>
   
-  <!-- Bottom bar -->
-  <rect x="40" y="290" width="720" height="4" rx="2" fill="#334155"/>
-  <rect x="40" y="290" width="600" height="4" rx="2" fill="url(#successGrad)"/>
-  <text x="660" y="298" text-anchor="start" fill="#22c55e" font-family="system-ui" font-size="10">83% progress</text>
+  <!-- Bottom Tagline -->
+  <text x="400" y="360" text-anchor="middle" fill="#64748B" font-family="system-ui, sans-serif" font-size="12" font-style="italic">Powered by Snowflake Data Cloud + Cortex AI</text>
 </svg>
-

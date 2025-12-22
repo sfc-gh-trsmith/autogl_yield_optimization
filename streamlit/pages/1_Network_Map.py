@@ -75,13 +75,50 @@ st.markdown("""
         font-size: 0.9rem;
     }
     
-    /* Mode toggle styling */
-    .mode-toggle {
-        background: var(--slate-800);
-        border-radius: 12px;
-        padding: 1rem 1.5rem;
-        border: 1px solid var(--slate-700);
-        margin-bottom: 1rem;
+    /* Segmented Control styling */
+    .seg-label {
+        color: var(--slate-400);
+        font-size: 0.8rem;
+        font-weight: 500;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        margin-bottom: 0.75rem;
+        display: block;
+    }
+    
+    /* Style buttons in the segmented control row */
+    .stButton > button[data-testid="baseButton-primary"] {
+        background: linear-gradient(135deg, var(--cortex-purple) 0%, #7c3aed 100%) !important;
+        color: white !important;
+        border: none !important;
+        border-radius: 10px !important;
+        padding: 0.65rem 1.25rem !important;
+        font-weight: 600 !important;
+        font-size: 0.9rem !important;
+        box-shadow: 0 3px 12px rgba(168, 85, 247, 0.4) !important;
+        transition: all 0.2s ease !important;
+    }
+    
+    .stButton > button[data-testid="baseButton-primary"]:hover {
+        box-shadow: 0 4px 16px rgba(168, 85, 247, 0.5) !important;
+        transform: translateY(-1px);
+    }
+    
+    .stButton > button[data-testid="baseButton-secondary"] {
+        background: var(--slate-800) !important;
+        color: var(--slate-300) !important;
+        border: 1px solid var(--slate-600) !important;
+        border-radius: 10px !important;
+        padding: 0.65rem 1.25rem !important;
+        font-weight: 500 !important;
+        font-size: 0.9rem !important;
+        transition: all 0.2s ease !important;
+    }
+    
+    .stButton > button[data-testid="baseButton-secondary"]:hover {
+        background: var(--slate-700) !important;
+        color: var(--slate-100) !important;
+        border-color: var(--slate-500) !important;
     }
     
     /* Legend styling */
@@ -278,13 +315,18 @@ st.markdown("""
 
 st.sidebar.markdown("""
 <div style="padding: 0.5rem 0 1rem 0; border-bottom: 1px solid #334155; margin-bottom: 1rem;">
-    <div style="font-size: 1.1rem; font-weight: 600; color: #e2e8f0;">🛢️ Permian Command Center</div>
+    <div style="font-size: 1.1rem; font-weight: 600; color: #e2e8f0;">Permian Command Center</div>
 </div>
 """, unsafe_allow_html=True)
 
 st.sidebar.page_link("streamlit_app.py", label="Home", icon="🏠")
 st.sidebar.page_link("pages/1_Network_Map.py", label="Network Discovery Map", icon="🗺️")
 st.sidebar.page_link("pages/2_Simulation_Chat.py", label="Simulation & Chat", icon="💬")
+st.sidebar.page_link("pages/4_Telemetry_Explorer.py", label="Telemetry Explorer", icon="📈")
+st.sidebar.page_link("pages/5_Production_Analytics.py", label="Production Analytics", icon="📊")
+st.sidebar.page_link("pages/6_Document_Intelligence.py", label="Document Intelligence", icon="📄")
+st.sidebar.markdown("---")
+st.sidebar.page_link("pages/3_About.py", label="About", icon="ℹ️")
 
 st.sidebar.markdown("---")
 
@@ -292,7 +334,7 @@ st.sidebar.markdown("---")
 if 'show_chat_panel' not in st.session_state:
     st.session_state.show_chat_panel = False
 
-st.sidebar.markdown("#### 💬 AI Assistant")
+st.sidebar.markdown("#### AI Assistant")
 if st.sidebar.button(
     "Show Chat" if not st.session_state.show_chat_panel else "Hide Chat",
     key="toggle_chat_network",
@@ -306,7 +348,7 @@ st.sidebar.markdown("---")
 # Header
 st.markdown("""
 <div class="page-header">
-    <h1>🗺️ Network Discovery Map</h1>
+    <h1>Network Discovery Map</h1>
     <p>Toggle between "Before" and "After" AutoGL to see how graph neural networks discover hidden dependencies</p>
 </div>
 """, unsafe_allow_html=True)
@@ -327,51 +369,56 @@ session = get_session()
 
 @st.cache_data(ttl=300)
 def load_network_data():
-    assets = session.sql(f"""
-        SELECT 
-            a.ASSET_ID,
-            a.SOURCE_SYSTEM,
-            a.ASSET_TYPE,
-            a.ASSET_SUBTYPE,
-            a.LATITUDE,
-            a.LONGITUDE,
-            a.MAX_PRESSURE_RATING_PSI,
-            a.MANUFACTURER,
-            a.INSTALL_DATE,
-            a.ZONE,
-            COALESCE(p.SCORE, 0) as RISK_SCORE,
-            p.EXPLANATION as RISK_EXPLANATION
-        FROM {SCHEMA_PREFIX}.ASSET_MASTER a
-        LEFT JOIN {SCHEMA_PREFIX}.GRAPH_PREDICTIONS p 
-            ON a.ASSET_ID = p.ENTITY_ID 
-            AND p.PREDICTION_TYPE = 'NODE_ANOMALY'
-    """).to_pandas()
-    
-    edges = session.sql(f"""
-        SELECT 
-            SEGMENT_ID,
-            SOURCE_ASSET_ID,
-            TARGET_ASSET_ID,
-            LINE_DIAMETER_INCHES,
-            MAX_PRESSURE_RATING_PSI,
-            STATUS,
-            LENGTH_MILES
-        FROM {SCHEMA_PREFIX}.NETWORK_EDGES
-        WHERE STATUS = 'ACTIVE'
-    """).to_pandas()
-    
-    predicted_links = session.sql(f"""
-        SELECT 
-            ENTITY_ID as SOURCE,
-            RELATED_ENTITY_ID as TARGET,
-            SCORE,
-            CONFIDENCE,
-            EXPLANATION
-        FROM {SCHEMA_PREFIX}.GRAPH_PREDICTIONS
-        WHERE PREDICTION_TYPE = 'LINK_PREDICTION' AND SCORE > 0.5
-    """).to_pandas()
-    
-    return assets, edges, predicted_links
+    try:
+        assets = session.sql(f"""
+            SELECT 
+                a.ASSET_ID,
+                a.SOURCE_SYSTEM,
+                a.ASSET_TYPE,
+                a.ASSET_SUBTYPE,
+                a.LATITUDE,
+                a.LONGITUDE,
+                a.MAX_PRESSURE_RATING_PSI,
+                a.MANUFACTURER,
+                a.INSTALL_DATE,
+                a.ZONE,
+                COALESCE(p.SCORE, 0) as RISK_SCORE,
+                p.EXPLANATION as RISK_EXPLANATION
+            FROM {SCHEMA_PREFIX}.ASSET_MASTER a
+            LEFT JOIN {SCHEMA_PREFIX}.GRAPH_PREDICTIONS p 
+                ON a.ASSET_ID = p.ENTITY_ID 
+                AND p.PREDICTION_TYPE = 'NODE_ANOMALY'
+        """).to_pandas()
+        
+        edges = session.sql(f"""
+            SELECT 
+                SEGMENT_ID,
+                SOURCE_ASSET_ID,
+                TARGET_ASSET_ID,
+                LINE_DIAMETER_INCHES,
+                MAX_PRESSURE_RATING_PSI,
+                STATUS,
+                LENGTH_MILES
+            FROM {SCHEMA_PREFIX}.NETWORK_EDGES
+            WHERE STATUS = 'ACTIVE'
+        """).to_pandas()
+        
+        predicted_links = session.sql(f"""
+            SELECT 
+                ENTITY_ID as SOURCE,
+                RELATED_ENTITY_ID as TARGET,
+                SCORE,
+                CONFIDENCE,
+                EXPLANATION
+            FROM {SCHEMA_PREFIX}.GRAPH_PREDICTIONS
+            WHERE PREDICTION_TYPE = 'LINK_PREDICTION' AND SCORE > 0.5
+        """).to_pandas()
+        
+        return assets, edges, predicted_links
+    except Exception as e:
+        st.error(f"Error loading network data: {str(e)}")
+        # Return empty DFs with expected columns to avoid downstream errors
+        return pd.DataFrame(), pd.DataFrame(), pd.DataFrame()
 
 assets_df, edges_df, predicted_links_df = load_network_data()
 
@@ -383,19 +430,43 @@ if 'selected_asset_context' not in st.session_state:
 # MAIN CONTENT - CONTROLS ABOVE MAP
 # =============================================================================
 
+# Initialize view mode in session state
+if 'network_view_mode' not in st.session_state:
+    st.session_state.network_view_mode = "after"
+
 # View Mode Toggle Row
 col_mode, col_stats = st.columns([3, 1])
 
 with col_mode:
-    view_mode = st.radio(
-        "Network View Mode",
-        ["Before AutoGL", "After AutoGL (Links Discovered)"],
-        index=1,
-        horizontal=True,
-        help="Toggle to see how AutoGL discovers hidden connections"
-    )
+    st.markdown('<span class="seg-label">Network View Mode</span>', unsafe_allow_html=True)
+    
+    # Segmented control using styled buttons
+    seg_cols = st.columns([1.2, 1.5, 3])
+    
+    is_before = st.session_state.network_view_mode == "before"
+    is_after = st.session_state.network_view_mode == "after"
+    
+    with seg_cols[0]:
+        if st.button(
+            "Before",
+            key="seg_before",
+            type="primary" if is_before else "secondary",
+            use_container_width=True
+        ):
+            st.session_state.network_view_mode = "before"
+            st.rerun()
+    
+    with seg_cols[1]:
+        if st.button(
+            "After AutoGL",
+            key="seg_after",
+            type="primary" if is_after else "secondary",
+            use_container_width=True
+        ):
+            st.session_state.network_view_mode = "after"
+            st.rerun()
 
-is_after_mode = "After" in view_mode
+is_after_mode = st.session_state.network_view_mode == "after"
 
 with col_stats:
     total_edges = len(edges_df)
@@ -698,7 +769,7 @@ asset_col1, asset_col2, asset_col3 = st.columns([2, 3, 1])
 with asset_col1:
     asset_list = assets_df['ASSET_ID'].tolist()
     selected_asset_id = st.selectbox(
-        "🎯 Select Asset for Details",
+        "Select Asset for Details",
         [""] + asset_list,
         index=0,
         help="Select an asset to view details and navigate to AI assistant"
@@ -733,7 +804,7 @@ with asset_col2:
 with asset_col3:
     if selected_asset_id:
         asset_row = assets_df[assets_df['ASSET_ID'] == selected_asset_id].iloc[0]
-        if st.button("💬 Ask AI", use_container_width=True, type="primary"):
+        if st.button("Ask AI", use_container_width=True, type="primary"):
             st.session_state.selected_asset_context = {
                 'asset_id': selected_asset_id,
                 'asset_type': asset_row['ASSET_TYPE'],
@@ -752,7 +823,7 @@ with asset_col3:
 # =============================================================================
 
 if is_after_mode:
-    st.markdown("### 🧠 AutoGL Discovered Links")
+    st.markdown("### AutoGL Discovered Links")
     
     st.markdown("""
     <div class="teaching-panel">
@@ -793,7 +864,7 @@ if is_after_mode:
 # RISK PROPAGATION PATH
 # =============================================================================
 
-st.markdown("### 🚨 Critical Risk Path: The Hidden Bottleneck")
+st.markdown("### Critical Risk Path: The Hidden Bottleneck")
 
 st.markdown("""
 <div class="risk-path-card">
@@ -882,12 +953,12 @@ col1, col2 = st.columns(2)
 with col1:
     st.markdown("""
     <div class="bottleneck-card">
-        <div class="bottleneck-title">⚠️ TF-V-204: The Critical Bottleneck</div>
+        <div class="bottleneck-title">TF-V-204: The Critical Bottleneck</div>
         <p style="color: #e2e8f0; font-size: 0.9rem; line-height: 1.7;">
             <strong>Equipment:</strong> TeraField 2-Phase Vertical Separator<br>
             <strong>Manufacturer:</strong> Natco (2012)<br>
             <strong>Max Rating:</strong> 600 PSI (MAWP)<br>
-            <strong>Projected Pressure:</strong> 800 PSI 🔴<br><br>
+            <strong>Projected Pressure:</strong> 800 PSI [DANGER]<br><br>
             <strong>Source:</strong> P&ID Document TF-MID-001<br>
             <strong>Known Issue:</strong> Bypass valve sticks above 550 PSI (Maintenance ticket MT-2023-4421)
         </p>
@@ -915,7 +986,7 @@ with col2:
 # NETWORK STATISTICS COMPARISON
 # =============================================================================
 
-st.markdown("### 📊 Network Statistics: Before vs After AutoGL")
+st.markdown("### Network Statistics: Before vs After AutoGL")
 
 col1, col2, col3, col4 = st.columns(4)
 
@@ -967,7 +1038,7 @@ with col4:
 # ASSET DETAILS TABLE
 # =============================================================================
 
-st.markdown("### 📋 Equipment Registry Comparison")
+st.markdown("### Equipment Registry Comparison")
 
 # Add filters
 col1, col2, col3 = st.columns(3)
@@ -1023,14 +1094,14 @@ st.dataframe(
 high_risk_assets = assets_df[assets_df['RISK_SCORE'] > 0.7].nlargest(3, 'RISK_SCORE')
 
 if len(high_risk_assets) > 0:
-    st.markdown("#### ⚠️ Quick Actions: High Risk Assets")
+    st.markdown("#### Quick Actions: High Risk Assets")
     
     cols = st.columns(len(high_risk_assets))
     
     for i, (_, hr_asset) in enumerate(high_risk_assets.iterrows()):
         with cols[i]:
             if st.button(
-                f"🔴 {hr_asset['ASSET_ID']} ({hr_asset['RISK_SCORE']:.2f})",
+                f"{hr_asset['ASSET_ID']} ({hr_asset['RISK_SCORE']:.2f})",
                 key=f"hr_{hr_asset['ASSET_ID']}",
                 use_container_width=True
             ):
@@ -1054,5 +1125,5 @@ if len(high_risk_assets) > 0:
 if st.session_state.get('show_chat_panel', False):
     with st.container():
         st.markdown("---")
-        st.markdown("### 💬 AI Integration Assistant")
+        st.markdown("### AI Integration Assistant")
         render_chat_panel(session, SCHEMA_PREFIX, assets_df, panel_key="network")

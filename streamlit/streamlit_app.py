@@ -370,13 +370,18 @@ st.markdown("""
 
 st.sidebar.markdown("""
 <div style="padding: 0.5rem 0 1rem 0; border-bottom: 1px solid #334155; margin-bottom: 1rem;">
-    <div style="font-size: 1.1rem; font-weight: 600; color: #e2e8f0;">🛢️ Permian Command Center</div>
+    <div style="font-size: 1.1rem; font-weight: 600; color: #e2e8f0;">Permian Command Center</div>
 </div>
 """, unsafe_allow_html=True)
 
 st.sidebar.page_link("streamlit_app.py", label="Home", icon="🏠")
 st.sidebar.page_link("pages/1_Network_Map.py", label="Network Discovery Map", icon="🗺️")
 st.sidebar.page_link("pages/2_Simulation_Chat.py", label="Simulation & Chat", icon="💬")
+st.sidebar.page_link("pages/4_Telemetry_Explorer.py", label="Telemetry Explorer", icon="📈")
+st.sidebar.page_link("pages/5_Production_Analytics.py", label="Production Analytics", icon="📊")
+st.sidebar.page_link("pages/6_Document_Intelligence.py", label="Document Intelligence", icon="📄")
+st.sidebar.markdown("---")
+st.sidebar.page_link("pages/3_About.py", label="About", icon="ℹ️")
 
 st.sidebar.markdown("---")
 
@@ -384,7 +389,7 @@ st.sidebar.markdown("---")
 if 'show_chat_panel' not in st.session_state:
     st.session_state.show_chat_panel = False
 
-st.sidebar.markdown("#### 💬 AI Assistant")
+st.sidebar.markdown("#### AI Assistant")
 if st.sidebar.button(
     "Show Chat" if not st.session_state.show_chat_panel else "Hide Chat",
     key="toggle_chat_home",
@@ -414,72 +419,88 @@ session = get_session()
 @st.cache_data(ttl=300)
 def load_asset_data():
     """Load asset master data with aggregations."""
-    assets = session.sql(f"""
-        SELECT 
-            ASSET_ID,
-            SOURCE_SYSTEM,
-            ASSET_TYPE,
-            ASSET_SUBTYPE,
-            MAX_PRESSURE_RATING_PSI,
-            MANUFACTURER,
-            INSTALL_DATE,
-            ZONE,
-            LATITUDE,
-            LONGITUDE
-        FROM {SCHEMA_PREFIX}.ASSET_MASTER
-    """).to_pandas()
-    return assets
+    try:
+        assets = session.sql(f"""
+            SELECT 
+                ASSET_ID,
+                SOURCE_SYSTEM,
+                ASSET_TYPE,
+                ASSET_SUBTYPE,
+                MAX_PRESSURE_RATING_PSI,
+                MANUFACTURER,
+                INSTALL_DATE,
+                ZONE,
+                LATITUDE,
+                LONGITUDE
+            FROM {SCHEMA_PREFIX}.ASSET_MASTER
+        """).to_pandas()
+        return assets
+    except Exception as e:
+        st.error(f"Error loading asset data: {str(e)}")
+        return pd.DataFrame()
 
 @st.cache_data(ttl=300)
 def load_scada_aggregates():
     """Load SCADA aggregates for data quality analysis."""
-    return session.sql(f"""
-        SELECT 
-            ASSET_ID,
-            RECORD_DATE,
-            SOURCE_SYSTEM,
-            ZONE,
-            ASSET_TYPE,
-            AVG_FLOW_RATE_BOPD,
-            TOTAL_PRODUCTION_BBL,
-            AVG_PRESSURE_PSI,
-            MAX_PRESSURE_PSI,
-            PRESSURE_VARIANCE,
-            AVG_TEMPERATURE_F,
-            READING_COUNT,
-            DOWNTIME_HOURS
-        FROM {SCHEMA_PREFIX}.SCADA_AGGREGATES
-        ORDER BY RECORD_DATE, ASSET_ID
-    """).to_pandas()
+    try:
+        return session.sql(f"""
+            SELECT 
+                ASSET_ID,
+                RECORD_DATE,
+                SOURCE_SYSTEM,
+                ZONE,
+                ASSET_TYPE,
+                AVG_FLOW_RATE_BOPD,
+                TOTAL_PRODUCTION_BBL,
+                AVG_PRESSURE_PSI,
+                MAX_PRESSURE_PSI,
+                PRESSURE_VARIANCE,
+                AVG_TEMPERATURE_F,
+                READING_COUNT,
+                DOWNTIME_HOURS
+            FROM {SCHEMA_PREFIX}.SCADA_AGGREGATES
+            ORDER BY RECORD_DATE, ASSET_ID
+        """).to_pandas()
+    except Exception as e:
+        st.error(f"Error loading SCADA data: {str(e)}")
+        return pd.DataFrame()
     
 @st.cache_data(ttl=300)
 def load_network_edges():
     """Load network edge data."""
-    return session.sql(f"""
-        SELECT 
-            SEGMENT_ID,
-            SOURCE_ASSET_ID,
-            TARGET_ASSET_ID,
-            LINE_DIAMETER_INCHES,
-            MAX_PRESSURE_RATING_PSI,
-            STATUS,
-            LENGTH_MILES
-        FROM {SCHEMA_PREFIX}.NETWORK_EDGES
-    """).to_pandas()
+    try:
+        return session.sql(f"""
+            SELECT 
+                SEGMENT_ID,
+                SOURCE_ASSET_ID,
+                TARGET_ASSET_ID,
+                LINE_DIAMETER_INCHES,
+                MAX_PRESSURE_RATING_PSI,
+                STATUS,
+                LENGTH_MILES
+            FROM {SCHEMA_PREFIX}.NETWORK_EDGES
+        """).to_pandas()
+    except Exception as e:
+        st.error(f"Error loading network edges: {str(e)}")
+        return pd.DataFrame()
     
 @st.cache_data(ttl=300)
 def load_predictions():
     """Load graph predictions."""
-    return session.sql(f"""
-        SELECT 
-            PREDICTION_TYPE,
-            ENTITY_ID,
-            RELATED_ENTITY_ID,
-            SCORE,
-            CONFIDENCE,
-            EXPLANATION
-        FROM {SCHEMA_PREFIX}.GRAPH_PREDICTIONS
-    """).to_pandas()
+    try:
+        return session.sql(f"""
+            SELECT 
+                PREDICTION_TYPE,
+                ENTITY_ID,
+                RELATED_ENTITY_ID,
+                SCORE,
+                CONFIDENCE,
+                EXPLANATION
+            FROM {SCHEMA_PREFIX}.GRAPH_PREDICTIONS
+        """).to_pandas()
+    except Exception as e:
+        st.error(f"Error loading predictions: {str(e)}")
+        return pd.DataFrame()
 
 # Load all data
 assets_df = load_asset_data()
@@ -493,7 +514,7 @@ predictions_df = load_predictions()
 
 st.markdown("""
 <div class="problem-banner">
-    <h1>🛢️ SnowCore Permian Command Center</h1>
+    <h1>SnowCore Permian Command Center</h1>
     <p>
         Following the acquisition of <strong>TeraField Resources</strong>, SnowCore Energy now operates two distinct, 
         disconnected gathering networks in the Permian Basin. Critical data regarding pipeline connectivity, 
@@ -645,20 +666,22 @@ with col2:
     )
     st.plotly_chart(fig_pressure, use_container_width=True)
 
-# Expandable teaching section
-with st.expander("📚 Why This Matters: The Pressure Mismatch Problem"):
-    st.markdown("""
-    **The Hidden Risk:** SnowCore's modern equipment operates at **1,000-1,500 PSI**, while TeraField's legacy 
-    separators and valves are rated for only **500-800 PSI**. When production from new SnowCore wells flows 
-    into acquired TeraField infrastructure, pressure mismatches can cause:
-    
-    - **Equipment failures** from exceeding design limits
-    - **Unplanned flaring** when safety systems activate
-    - **Production deferment** while repairs are made
-    
-    **The Challenge:** Without unified visibility across both systems, operators cannot predict these 
-    interactions until an alarm sounds.
-    """)
+# Teaching section replacement for expander
+st.markdown("""
+<div class="teaching-section">
+    <h3>Why This Matters: The Pressure Mismatch Problem</h3>
+    <p><strong>The Hidden Risk:</strong> SnowCore's modern equipment operates at <strong>1,000-1,500 PSI</strong>, while TeraField's legacy 
+    separators and valves are rated for only <strong>500-800 PSI</strong>. When production from new SnowCore wells flows 
+    into acquired TeraField infrastructure, pressure mismatches can cause:</p>
+    <ul>
+        <li><strong>Equipment failures</strong> from exceeding design limits</li>
+        <li><strong>Unplanned flaring</strong> when safety systems activate</li>
+        <li><strong>Production deferment</strong> while repairs are made</li>
+    </ul>
+    <p><strong>The Challenge:</strong> Without unified visibility across both systems, operators cannot predict these 
+    interactions until an alarm sounds.</p>
+</div>
+""", unsafe_allow_html=True)
 
 # =============================================================================
 # SECTION 3: DATA QUALITY DASHBOARD
@@ -686,7 +709,7 @@ with col1:
     <div class="metric-card">
         <div class="metric-value quality-good">{sc_completeness:.1f}%</div>
         <div class="metric-label">SnowCore Data Completeness</div>
-        <div class="metric-delta quality-good">✓ High-frequency sampling</div>
+        <div class="metric-delta quality-good">High-frequency sampling</div>
     </div>
     """, unsafe_allow_html=True)
 
@@ -696,7 +719,7 @@ with col2:
     <div class="metric-card">
         <div class="metric-value quality-poor">{tf_completeness:.1f}%</div>
         <div class="metric-label">TeraField Data Completeness</div>
-        <div class="metric-delta quality-poor">⚠ Communication gaps</div>
+        <div class="metric-delta quality-poor">Communication gaps</div>
     </div>
     """, unsafe_allow_html=True)
 
@@ -774,28 +797,33 @@ with col2:
     )
     st.plotly_chart(fig_readings, use_container_width=True)
 
-# Teaching section on data quality
-with st.expander("📚 Understanding the Data Quality Gap"):
-    col1, col2 = st.columns(2)
-    
-    with col1:
-        st.markdown("""
-        **SnowCore (Modern):**
-        - 1-second sampling rate from OSIsoft PI
-        - Clean digital signals with low noise
-        - Hierarchical ISA-95 tag naming
-        - Example: `DELAWARE/PAD_42/SEP_V101/PRESS_PV`
-        """)
-    
-    with col2:
-        st.markdown("""
-        **TeraField (Legacy):**
-        - 1-minute polling from CygNet
-        - Higher noise, "deadband" artifacts
-        - Flat cryptic tag naming
-        - Example: `TF_MID_HUB_V204_P`
-        - Communication failure gaps (2% of readings missing)
-        """)
+# Teaching section replacement for expander
+st.markdown("""
+<div class="teaching-section">
+    <h3>Understanding the Data Quality Gap</h3>
+    <div style="display: flex; gap: 2rem; flex-wrap: wrap;">
+        <div style="flex: 1; min-width: 300px;">
+            <p><strong>SnowCore (Modern):</strong></p>
+            <ul>
+                <li>1-second sampling rate from OSIsoft PI</li>
+                <li>Clean digital signals with low noise</li>
+                <li>Hierarchical ISA-95 tag naming</li>
+                <li>Example: <code>DELAWARE/PAD_42/SEP_V101/PRESS_PV</code></li>
+            </ul>
+        </div>
+        <div style="flex: 1; min-width: 300px;">
+            <p><strong>TeraField (Legacy):</strong></p>
+            <ul>
+                <li>1-minute polling from CygNet</li>
+                <li>Higher noise, "deadband" artifacts</li>
+                <li>Flat cryptic tag naming</li>
+                <li>Example: <code>TF_MID_HUB_V204_P</code></li>
+                <li>Communication failure gaps (2% of readings missing)</li>
+            </ul>
+        </div>
+    </div>
+</div>
+""", unsafe_allow_html=True)
 
 # =============================================================================
 # SECTION 4: NETWORK CONNECTIVITY - THE GAP
@@ -1072,7 +1100,7 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # Solution overview in tabs
-tab1, tab2, tab3 = st.tabs(["🔗 Data Integration", "🧠 AI Capabilities", "🎯 Key Discovery"])
+tab1, tab2, tab3 = st.tabs(["Data Integration", "AI Capabilities", "Key Discovery"])
 
 with tab1:
     st.markdown("""
@@ -1086,7 +1114,7 @@ with tab1:
     with col1:
         st.markdown("""
         <div class="teaching-section">
-            <h3>📥 Data Ingestion</h3>
+            <h3>Data Ingestion</h3>
             <p><strong>SnowCore Sources:</strong></p>
             <ul>
                 <li>OSIsoft PI Historian → SCADA_TELEMETRY</li>
@@ -1104,7 +1132,7 @@ with tab1:
     with col2:
         st.markdown("""
         <div class="teaching-section">
-            <h3>🔄 Unified Schema</h3>
+            <h3>Unified Schema</h3>
             <p>All data normalized to common tables:</p>
             <ul>
                 <li><code>ASSET_MASTER</code> - Equipment registry</li>
@@ -1119,7 +1147,7 @@ with tab1:
     with col3:
         st.markdown("""
         <div class="teaching-section">
-            <h3>📊 Analysis Ready</h3>
+            <h3>Analysis Ready</h3>
             <p>Cross-system queries now possible:</p>
             <ul>
                 <li>Compare downtime by source</li>
@@ -1140,7 +1168,7 @@ with tab2:
     with col1:
         st.markdown("""
         <div class="teaching-section" style="border-left: 4px solid #0ea5e9;">
-            <h3>🔍 Cortex Search</h3>
+            <h3>Cortex Search</h3>
             <p><strong>Purpose:</strong> Extract knowledge from unstructured P&ID documents</p>
             <p><strong>Example Query:</strong></p>
             <p><em>"What is the maximum pressure rating for Separator V-204?"</em></p>
@@ -1151,7 +1179,7 @@ with tab2:
     with col2:
         st.markdown("""
         <div class="teaching-section" style="border-left: 4px solid #a855f7;">
-            <h3>📈 Cortex Analyst</h3>
+            <h3>Cortex Analyst</h3>
             <p><strong>Purpose:</strong> Natural language to SQL for structured data</p>
             <p><strong>Example Query:</strong></p>
             <p><em>"Compare downtime between legacy and acquired assets"</em></p>
@@ -1162,7 +1190,7 @@ with tab2:
     with col3:
         st.markdown("""
         <div class="teaching-section" style="border-left: 4px solid #f43f5e;">
-            <h3>🤖 Cortex Agent</h3>
+            <h3>Cortex Agent</h3>
             <p><strong>Purpose:</strong> Reason across both structured and unstructured data</p>
             <p><strong>Example:</strong></p>
             <p><em>"Can I route 5k extra barrels through Midland Hub?"</em></p>
@@ -1174,7 +1202,7 @@ with tab2:
     
     st.markdown("""
     <div class="teaching-section" style="border-left: 4px solid #06b6d4;">
-        <h3>🧬 AutoGL Graph Neural Network</h3>
+        <h3>AutoGL Graph Neural Network</h3>
         <p><strong>Purpose:</strong> Learn hidden patterns in the network topology</p>
         <ul>
             <li><strong>Link Prediction:</strong> Discovers probable connections between assets that aren't in the edge table</li>
@@ -1201,7 +1229,7 @@ with tab3:
         
         st.markdown(f"""
         <div class="alert-card" style="background: rgba(239, 68, 68, 0.15); border-left-color: #ef4444;">
-            <div class="alert-title">🚨 HIGH RISK DETECTED: TF-V-204</div>
+            <div class="alert-title">HIGH RISK DETECTED: TF-V-204</div>
             <div class="alert-content">
                 <strong>Risk Score:</strong> {risk_score:.2f}<br><br>
                 <strong>Analysis:</strong> {explanation}
@@ -1219,9 +1247,9 @@ with tab3:
             ↓ PIPE-01
         SC-SEP-101 (1440 PSI rating)
             ↓ PIPE-88 (cross-network!)
-        TF-V-204 (600 PSI rating) ⚠️
+        TF-V-204 (600 PSI rating) [RISK]
             ↓ PIPE-TF-01
-        TF-VALVE-101 (550 PSI rating) ⚠️
+        TF-VALVE-101 (550 PSI rating) [RISK]
         ```
         """)
     
@@ -1265,7 +1293,7 @@ if len(high_risk) > 0:
             
             st.markdown(f"""
             <div class="alert-card" style="border-left-color: {color}; background: {bg_color};">
-                <div class="alert-title" style="color: {color};">🚨 {severity} RISK - {alert['ENTITY_ID']}</div>
+                <div class="alert-title" style="color: {color};">{severity} RISK - {alert['ENTITY_ID']}</div>
                 <div class="alert-content">
                     <strong>Risk Score:</strong> {alert['SCORE']:.2f} | 
                     <strong>System:</strong> {asset['SOURCE_SYSTEM']} | 
@@ -1284,21 +1312,21 @@ else:
 
 st.markdown("---")
 
-st.markdown("### 📍 Continue Exploring")
+st.markdown("### Continue Exploring")
 
 col1, col2, col3 = st.columns(3)
 
 with col1:
-    if st.button("🗺️ View Network Map", use_container_width=True, help="Interactive map with before/after AutoGL toggle"):
+    if st.button("View Network Map", use_container_width=True, help="Interactive map with before/after AutoGL toggle"):
         st.switch_page("pages/1_Network_Map.py")
 
 with col2:
-    if st.button("💬 Open AI Chat", use_container_width=True, help="Chat with AI about risks and routing"):
+    if st.button("Open AI Chat", use_container_width=True, help="Chat with AI about risks and routing"):
         st.session_state.show_chat_panel = True
         st.rerun()
 
 with col3:
-    if st.button("🔄 Refresh Data", use_container_width=True):
+    if st.button("Refresh Data", use_container_width=True):
         st.cache_data.clear()
         st.rerun()
 
@@ -1338,5 +1366,5 @@ if st.session_state.get('show_chat_panel', False):
     
     with st.container():
         st.markdown("---")
-        st.markdown("### 💬 AI Integration Assistant")
+        st.markdown("### AI Integration Assistant")
         render_chat_panel(session, SCHEMA_PREFIX, assets_df, panel_key="home")

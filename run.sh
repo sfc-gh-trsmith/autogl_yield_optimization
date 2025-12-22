@@ -38,9 +38,6 @@ CONNECTION="demo"
 ENV_PREFIX=""
 COMMAND=""
 
-# Project naming base (per guidelines)
-PROJECT_PREFIX="AUTOGL_YIELD_OPTIMIZATION"
-
 # Display usage
 usage() {
     cat << EOF
@@ -103,6 +100,32 @@ done
 if [ -z "$COMMAND" ]; then
     usage
 fi
+
+# Read project name from .cursor/PROJECT_NAME.md
+PROJECT_NAME_FILE="${SCRIPT_DIR}/.cursor/PROJECT_NAME.md"
+DIR_BASENAME=$(basename "$SCRIPT_DIR")
+
+if [ -f "$PROJECT_NAME_FILE" ]; then
+    PROJECT_NAME=$(head -1 "$PROJECT_NAME_FILE" | tr -d '[:space:]')
+else
+    PROJECT_NAME=""
+fi
+
+# Validate project name
+if [ -z "$PROJECT_NAME" ]; then
+    echo -e "${YELLOW}[WARN] .cursor/PROJECT_NAME.md not found${NC}"
+    echo "Using directory name: $DIR_BASENAME"
+    read -p "Continue? (yes/no): " CONFIRM
+    [ "$CONFIRM" != "yes" ] && exit 1
+    PROJECT_NAME="$DIR_BASENAME"
+elif [ "$PROJECT_NAME" != "$DIR_BASENAME" ]; then
+    echo -e "${YELLOW}[WARN] Project name '$PROJECT_NAME' differs from directory '$DIR_BASENAME'${NC}"
+    read -p "Continue with '$PROJECT_NAME'? (yes/no): " CONFIRM
+    [ "$CONFIRM" != "yes" ] && exit 1
+fi
+
+# Convert to uppercase for Snowflake naming
+PROJECT_PREFIX=$(echo "$PROJECT_NAME" | tr '[:lower:]' '[:upper:]')
 
 # Build connection string
 SNOW_CONN="-c $CONNECTION"
@@ -210,16 +233,7 @@ cmd_status() {
     
     # Check table row counts
     echo "Table Row Counts:"
-    snow sql ${SNOW_CONN} -q "
-        USE ROLE ${ROLE};
-        USE DATABASE ${DATABASE};
-        USE SCHEMA ${SCHEMA};
-        SELECT 'ASSET_MASTER' AS TABLE_NAME, COUNT(*) AS ROWS FROM ASSET_MASTER
-        UNION ALL SELECT 'NETWORK_EDGES', COUNT(*) FROM NETWORK_EDGES
-        UNION ALL SELECT 'SCADA_TELEMETRY', COUNT(*) FROM SCADA_TELEMETRY
-        UNION ALL SELECT 'GRAPH_PREDICTIONS', COUNT(*) FROM GRAPH_PREDICTIONS
-        UNION ALL SELECT 'SCADA_AGGREGATES', COUNT(*) FROM SCADA_AGGREGATES;
-    " 2>/dev/null || echo "  [WARN] Error querying tables"
+    snow sql ${SNOW_CONN} -q "USE ROLE ${ROLE}; USE DATABASE ${DATABASE}; USE SCHEMA ${SCHEMA}; SELECT 'ASSET_MASTER' AS TABLE_NAME, COUNT(*) AS ROWS FROM ASSET_MASTER UNION ALL SELECT 'NETWORK_EDGES', COUNT(*) FROM NETWORK_EDGES UNION ALL SELECT 'SCADA_TELEMETRY', COUNT(*) FROM SCADA_TELEMETRY UNION ALL SELECT 'GRAPH_PREDICTIONS', COUNT(*) FROM GRAPH_PREDICTIONS UNION ALL SELECT 'SCADA_AGGREGATES', COUNT(*) FROM SCADA_AGGREGATES;" 2>/dev/null || echo "  [WARN] Error querying tables"
     echo ""
     
     # Check high-risk assets

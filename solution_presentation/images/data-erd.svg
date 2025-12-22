@@ -1,0 +1,91 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 400">
+  <!-- Background: Midnight / Dark Blue -->
+  <rect width="800" height="400" fill="#0D1B2A" rx="0"/>
+  
+  <!-- Title -->
+  <text x="400" y="35" text-anchor="middle" fill="#E2E8F0" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="600">Data Model (ERD)</text>
+
+  <!-- Defs for Arrows -->
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#64748B"/>
+    </marker>
+  </defs>
+
+  <!-- ASSET_MASTER (Dimension) - Center Top -->
+  <g transform="translate(300, 60)">
+    <!-- Header -->
+    <rect x="0" y="0" width="200" height="25" rx="4" fill="#22C55E" stroke="none"/>
+    <text x="100" y="17" text-anchor="middle" fill="#0D1B2A" font-family="system-ui" font-size="11" font-weight="700">DIM: ASSET_MASTER</text>
+    
+    <!-- Body -->
+    <rect x="0" y="25" width="200" height="85" fill="#1E293B" stroke="#22C55E" stroke-width="1"/>
+    
+    <!-- Columns -->
+    <text x="10" y="45" fill="#F59E0B" font-family="monospace" font-size="10">PK  ASSET_ID</text>
+    <text x="10" y="60" fill="#E2E8F0" font-family="monospace" font-size="10">    ASSET_TYPE</text>
+    <text x="10" y="75" fill="#E2E8F0" font-family="monospace" font-size="10">    SOURCE_SYSTEM</text>
+    <text x="10" y="90" fill="#E2E8F0" font-family="monospace" font-size="10">    ZONE_ID</text>
+    <text x="10" y="105" fill="#E2E8F0" font-family="monospace" font-size="10">    SPECS_JSON</text>
+  </g>
+
+  <!-- NETWORK_EDGES (Fact) - Left Bottom -->
+  <g transform="translate(50, 200)">
+    <!-- Header -->
+    <rect x="0" y="0" width="200" height="25" rx="4" fill="#F59E0B" stroke="none"/>
+    <text x="100" y="17" text-anchor="middle" fill="#0D1B2A" font-family="system-ui" font-size="11" font-weight="700">FACT: NETWORK_EDGES</text>
+    
+    <!-- Body -->
+    <rect x="0" y="25" width="200" height="85" fill="#1E293B" stroke="#F59E0B" stroke-width="1"/>
+    
+    <!-- Columns -->
+    <text x="10" y="45" fill="#29B5E8" font-family="monospace" font-size="10">FK  SOURCE_NODE_ID</text>
+    <text x="10" y="60" fill="#29B5E8" font-family="monospace" font-size="10">FK  TARGET_NODE_ID</text>
+    <text x="10" y="75" fill="#E2E8F0" font-family="monospace" font-size="10">    EDGE_TYPE</text>
+    <text x="10" y="90" fill="#E2E8F0" font-family="monospace" font-size="10">    CAPACITY_BBL</text>
+    <text x="10" y="105" fill="#E2E8F0" font-family="monospace" font-size="10">    IS_PREDICTED</text>
+  </g>
+
+  <!-- SCADA_TELEMETRY (Fact) - Right Bottom -->
+  <g transform="translate(550, 200)">
+    <!-- Header -->
+    <rect x="0" y="0" width="200" height="25" rx="4" fill="#F59E0B" stroke="none"/>
+    <text x="100" y="17" text-anchor="middle" fill="#0D1B2A" font-family="system-ui" font-size="11" font-weight="700">FACT: SCADA_TELEMETRY</text>
+    
+    <!-- Body -->
+    <rect x="0" y="25" width="200" height="85" fill="#1E293B" stroke="#F59E0B" stroke-width="1"/>
+    
+    <!-- Columns -->
+    <text x="10" y="45" fill="#F59E0B" font-family="monospace" font-size="10">PK  EVENT_TIMESTAMP</text>
+    <text x="10" y="60" fill="#29B5E8" font-family="monospace" font-size="10">FK  ASSET_ID</text>
+    <text x="10" y="75" fill="#E2E8F0" font-family="monospace" font-size="10">    PRESSURE_PSI</text>
+    <text x="10" y="90" fill="#E2E8F0" font-family="monospace" font-size="10">    FLOW_RATE_BPH</text>
+    <text x="10" y="105" fill="#E2E8F0" font-family="monospace" font-size="10">    TEMPERATURE_F</text>
+  </g>
+
+  <!-- GRAPH_PREDICTIONS (Output) - Center Bottom -->
+  <g transform="translate(300, 300)">
+    <!-- Header -->
+    <rect x="0" y="0" width="200" height="25" rx="4" fill="#A855F7" stroke="none"/>
+    <text x="100" y="17" text-anchor="middle" fill="#FFFFFF" font-family="system-ui" font-size="11" font-weight="700">OUT: GRAPH_PREDICTIONS</text>
+    
+    <!-- Body -->
+    <rect x="0" y="25" width="200" height="60" fill="#1E293B" stroke="#A855F7" stroke-width="1"/>
+    
+    <!-- Columns -->
+    <text x="10" y="45" fill="#29B5E8" font-family="monospace" font-size="10">FK  SOURCE_ASSET_ID</text>
+    <text x="10" y="60" fill="#29B5E8" font-family="monospace" font-size="10">FK  TARGET_ASSET_ID</text>
+    <text x="10" y="75" fill="#E2E8F0" font-family="monospace" font-size="10">    CONFIDENCE_SCORE</text>
+  </g>
+
+  <!-- Relationships -->
+  <!-- Asset to Edges (Source) -->
+  <path d="M 300 100 C 200 100 200 200 200 225" fill="none" stroke="#64748B" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+  
+  <!-- Asset to Telemetry -->
+  <path d="M 500 100 C 600 100 600 200 600 225" fill="none" stroke="#64748B" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+  
+  <!-- Asset to Predictions (Implicit) -->
+  <line x1="400" y1="170" x2="400" y2="300" stroke="#64748B" stroke-width="1.5" stroke-dasharray="4,4" marker-end="url(#arrowhead)"/>
+
+</svg>

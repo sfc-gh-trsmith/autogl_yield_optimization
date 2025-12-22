@@ -1,88 +1,92 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 400">
   <defs>
-    <linearGradient id="bgGrad3" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:#0f172a"/>
-      <stop offset="100%" style="stop-color:#1e293b"/>
-    </linearGradient>
-    <linearGradient id="snowflakeGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:#29b5e8"/>
-      <stop offset="100%" style="stop-color:#0ea5e9"/>
-    </linearGradient>
+    <filter id="shadow">
+      <feDropShadow dx="0" dy="2" stdDeviation="3" flood-opacity="0.3"/>
+    </filter>
   </defs>
   
-  <!-- Background -->
-  <rect width="800" height="450" fill="url(#bgGrad3)" rx="12"/>
+  <!-- Background: Midnight / Dark Blue -->
+  <rect width="800" height="400" fill="#0D1B2A" rx="0"/>
   
   <!-- Title -->
-  <text x="400" y="35" text-anchor="middle" fill="#e2e8f0" font-family="system-ui" font-size="20" font-weight="600">Why Snowflake: Four Pillars of Value</text>
+  <text x="400" y="35" text-anchor="middle" fill="#E2E8F0" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="600">Solution Architecture</text>
   
-  <!-- Central Snowflake Logo Area -->
-  <circle cx="400" cy="225" r="70" fill="#29b5e820" stroke="#29b5e8" stroke-width="2"/>
-  <text x="400" y="215" text-anchor="middle" fill="#29b5e8" font-family="system-ui" font-size="14" font-weight="600">SNOWFLAKE</text>
-  <text x="400" y="235" text-anchor="middle" fill="#94a3b8" font-family="system-ui" font-size="11">Data Cloud</text>
+  <!-- Outer Cloud Container -->
+  <rect x="50" y="60" width="700" height="280" rx="16" fill="#1E293B" stroke="#29B5E8" stroke-width="1.5" stroke-dasharray="8,4"/>
+  <text x="70" y="90" fill="#29B5E8" font-family="system-ui, sans-serif" font-size="14" font-weight="700">Snowflake Data Cloud</text>
   
-  <!-- Pillar 1: Unified Foundation (Top Left) -->
-  <g transform="translate(60, 70)">
-    <rect x="0" y="0" width="200" height="120" rx="10" fill="#1e293b" stroke="#0ea5e9" stroke-width="2"/>
-    <circle cx="25" cy="25" r="15" fill="#0ea5e920" stroke="#0ea5e9" stroke-width="1"/>
-    <text x="25" y="30" text-anchor="middle" fill="#0ea5e9" font-family="system-ui" font-size="14">🗄️</text>
-    <text x="50" y="30" fill="#e2e8f0" font-family="system-ui" font-size="13" font-weight="600">Unified Foundation</text>
-    <text x="15" y="55" fill="#cbd5e1" font-family="system-ui" font-size="10">Single governed platform</text>
-    <text x="15" y="70" fill="#cbd5e1" font-family="system-ui" font-size="10">unifies SnowCore + TeraField</text>
-    <text x="15" y="85" fill="#cbd5e1" font-family="system-ui" font-size="10">SCADA, ERP, and docs.</text>
-    <text x="15" y="105" fill="#94a3b8" font-family="system-ui" font-size="9" font-style="italic">→ One SQL query across all data</text>
+  <!-- Layer 1: Ingest (Left) -->
+  <g transform="translate(100, 110)">
+    <rect x="0" y="0" width="120" height="180" rx="8" fill="#0F172A" stroke="#29B5E8" stroke-width="1"/>
+    <text x="60" y="25" text-anchor="middle" fill="#29B5E8" font-family="system-ui, sans-serif" font-size="12" font-weight="600">Ingest</text>
+    
+    <!-- Components -->
+    <rect x="15" y="45" width="90" height="30" rx="4" fill="#29B5E820" stroke="#29B5E8" stroke-width="1"/>
+    <text x="60" y="64" text-anchor="middle" fill="#E2E8F0" font-family="system-ui, sans-serif" font-size="10">Snowpipe</text>
+    
+    <rect x="15" y="85" width="90" height="30" rx="4" fill="#29B5E820" stroke="#29B5E8" stroke-width="1"/>
+    <text x="60" y="104" text-anchor="middle" fill="#E2E8F0" font-family="system-ui, sans-serif" font-size="10">Streaming</text>
+    
+    <rect x="15" y="125" width="90" height="30" rx="4" fill="#29B5E820" stroke="#29B5E8" stroke-width="1"/>
+    <text x="60" y="144" text-anchor="middle" fill="#E2E8F0" font-family="system-ui, sans-serif" font-size="10">Dynamic Tbls</text>
   </g>
   
-  <!-- Connector line from Pillar 1 to center -->
-  <line x1="260" y1="130" x2="340" y2="190" stroke="#0ea5e9" stroke-width="1" stroke-dasharray="4,2"/>
+  <!-- Arrow 1 -->
+  <path d="M 220 200 L 260 200" stroke="#64748B" stroke-width="2" marker-end="url(#arrowhead)"/>
   
-  <!-- Pillar 2: Scale (Top Right) -->
-  <g transform="translate(540, 70)">
-    <rect x="0" y="0" width="200" height="120" rx="10" fill="#1e293b" stroke="#22c55e" stroke-width="2"/>
-    <circle cx="25" cy="25" r="15" fill="#22c55e20" stroke="#22c55e" stroke-width="1"/>
-    <text x="25" y="30" text-anchor="middle" fill="#22c55e" font-family="system-ui" font-size="14">⚡</text>
-    <text x="50" y="30" fill="#e2e8f0" font-family="system-ui" font-size="13" font-weight="600">Scales With You</text>
-    <text x="15" y="55" fill="#cbd5e1" font-family="system-ui" font-size="10">Elastic compute for GNN</text>
-    <text x="15" y="70" fill="#cbd5e1" font-family="system-ui" font-size="10">inference and real-time</text>
-    <text x="15" y="85" fill="#cbd5e1" font-family="system-ui" font-size="10">simulation—no planning.</text>
-    <text x="15" y="105" fill="#94a3b8" font-family="system-ui" font-size="9" font-style="italic">→ AutoGL runs in &lt; 5 minutes</text>
+  <!-- Layer 2: Compute/AI (Center) -->
+  <g transform="translate(260, 110)">
+    <rect x="0" y="0" width="280" height="180" rx="8" fill="#0F172A" stroke="#22C55E" stroke-width="1"/>
+    <text x="140" y="25" text-anchor="middle" fill="#22C55E" font-family="system-ui, sans-serif" font-size="12" font-weight="600">Compute &amp; AI</text>
+    
+    <!-- Snowpark ML -->
+    <g transform="translate(20, 45)">
+      <rect x="0" y="0" width="110" height="110" rx="6" fill="#22C55E10" stroke="#22C55E" stroke-width="1"/>
+      <text x="55" y="20" text-anchor="middle" fill="#22C55E" font-family="system-ui, sans-serif" font-size="11" font-weight="600">Snowpark ML</text>
+      <text x="55" y="50" text-anchor="middle" fill="#E2E8F0" font-family="system-ui, sans-serif" font-size="10">Graph Neural</text>
+      <text x="55" y="65" text-anchor="middle" fill="#E2E8F0" font-family="system-ui, sans-serif" font-size="10">Networks</text>
+      <text x="55" y="90" text-anchor="middle" fill="#94A3B8" font-family="system-ui, sans-serif" font-size="9">(AutoGL)</text>
+    </g>
+    
+    <!-- Cortex AI -->
+    <g transform="translate(150, 45)">
+      <rect x="0" y="0" width="110" height="110" rx="6" fill="#A855F710" stroke="#A855F7" stroke-width="1"/>
+      <text x="55" y="20" text-anchor="middle" fill="#A855F7" font-family="system-ui, sans-serif" font-size="11" font-weight="600">Cortex AI</text>
+      
+      <rect x="15" y="35" width="80" height="25" rx="3" fill="#A855F720"/>
+      <text x="55" y="51" text-anchor="middle" fill="#E2E8F0" font-family="system-ui, sans-serif" font-size="9">Cortex Search</text>
+      
+      <rect x="15" y="70" width="80" height="25" rx="3" fill="#A855F720"/>
+      <text x="55" y="86" text-anchor="middle" fill="#E2E8F0" font-family="system-ui, sans-serif" font-size="9">Cortex Agent</text>
+    </g>
   </g>
   
-  <!-- Connector line from Pillar 2 to center -->
-  <line x1="540" y1="130" x2="460" y2="190" stroke="#22c55e" stroke-width="1" stroke-dasharray="4,2"/>
+  <!-- Arrow 2 -->
+  <path d="M 540 200 L 580 200" stroke="#64748B" stroke-width="2" marker-end="url(#arrowhead)"/>
   
-  <!-- Pillar 3: Collaboration (Bottom Left) -->
-  <g transform="translate(60, 260)">
-    <rect x="0" y="0" width="200" height="120" rx="10" fill="#1e293b" stroke="#a855f7" stroke-width="2"/>
-    <circle cx="25" cy="25" r="15" fill="#a855f720" stroke="#a855f7" stroke-width="1"/>
-    <text x="25" y="30" text-anchor="middle" fill="#a855f7" font-family="system-ui" font-size="14">🤝</text>
-    <text x="50" y="30" fill="#e2e8f0" font-family="system-ui" font-size="13" font-weight="600">Collaboration</text>
-    <text x="15" y="55" fill="#cbd5e1" font-family="system-ui" font-size="10">Secure sharing between</text>
-    <text x="15" y="70" fill="#cbd5e1" font-family="system-ui" font-size="10">HQ, field ops, and</text>
-    <text x="15" y="85" fill="#cbd5e1" font-family="system-ui" font-size="10">contractors on same data.</text>
-    <text x="15" y="105" fill="#94a3b8" font-family="system-ui" font-size="9" font-style="italic">→ Row-level security by zone</text>
+  <!-- Layer 3: Serve (Right) -->
+  <g transform="translate(580, 110)">
+    <rect x="0" y="0" width="120" height="180" rx="8" fill="#0F172A" stroke="#F59E0B" stroke-width="1"/>
+    <text x="60" y="25" text-anchor="middle" fill="#F59E0B" font-family="system-ui, sans-serif" font-size="12" font-weight="600">Serve</text>
+    
+    <!-- Streamlit -->
+    <rect x="15" y="60" width="90" height="80" rx="6" fill="#F59E0B20" stroke="#F59E0B" stroke-width="1"/>
+    <text x="45" y="95" text-anchor="middle" fill="#F59E0B" font-size="24"></text>
+    <text x="60" y="120" text-anchor="middle" fill="#E2E8F0" font-family="system-ui, sans-serif" font-size="11" font-weight="600">Streamlit</text>
+    <text x="60" y="135" text-anchor="middle" fill="#E2E8F0" font-family="system-ui, sans-serif" font-size="9">in Snowflake</text>
   </g>
   
-  <!-- Connector line from Pillar 3 to center -->
-  <line x1="260" y1="320" x2="340" y2="260" stroke="#a855f7" stroke-width="1" stroke-dasharray="4,2"/>
-  
-  <!-- Pillar 4: AI/ML (Bottom Right) -->
-  <g transform="translate(540, 260)">
-    <rect x="0" y="0" width="200" height="120" rx="10" fill="#1e293b" stroke="#f59e0b" stroke-width="2"/>
-    <circle cx="25" cy="25" r="15" fill="#f59e0b20" stroke="#f59e0b" stroke-width="1"/>
-    <text x="25" y="30" text-anchor="middle" fill="#f59e0b" font-family="system-ui" font-size="14">🧠</text>
-    <text x="50" y="30" fill="#e2e8f0" font-family="system-ui" font-size="13" font-weight="600">Built-in AI/ML</text>
-    <text x="15" y="55" fill="#cbd5e1" font-family="system-ui" font-size="10">Cortex Search, Analyst,</text>
-    <text x="15" y="70" fill="#cbd5e1" font-family="system-ui" font-size="10">and Agent + Snowpark ML</text>
-    <text x="15" y="85" fill="#cbd5e1" font-family="system-ui" font-size="10">for graph learning on data.</text>
-    <text x="15" y="105" fill="#94a3b8" font-family="system-ui" font-size="9" font-style="italic">→ No data movement required</text>
+  <!-- Legend / Bottom Bar -->
+  <g transform="translate(150, 360)">
+    <text x="0" y="0" fill="#94A3B8" font-family="system-ui, sans-serif" font-size="11">● Unified Governance</text>
+    <text x="150" y="0" fill="#94A3B8" font-family="system-ui, sans-serif" font-size="11">● Elastic Compute</text>
+    <text x="300" y="0" fill="#94A3B8" font-family="system-ui, sans-serif" font-size="11">● Secure Sharing</text>
   </g>
   
-  <!-- Connector line from Pillar 4 to center -->
-  <line x1="540" y1="320" x2="460" y2="260" stroke="#f59e0b" stroke-width="1" stroke-dasharray="4,2"/>
-  
-  <!-- Bottom tagline -->
-  <rect x="200" y="410" width="400" height="30" rx="6" fill="#29b5e810" stroke="#29b5e8" stroke-width="1"/>
-  <text x="400" y="430" text-anchor="middle" fill="#29b5e8" font-family="system-ui" font-size="12">The AI Data Cloud for Energy Operations</text>
+  <!-- Marker Def -->
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#64748B"/>
+    </marker>
+  </defs>
 </svg>
-

@@ -1,174 +1,62 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500">
-  <defs>
-    <linearGradient id="bgGrad5" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:#0f172a"/>
-      <stop offset="100%" style="stop-color:#1e293b"/>
-    </linearGradient>
-    <marker id="flowArrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
-      <polygon points="0 0, 8 3, 0 6" fill="#06b6d4"/>
-    </marker>
-  </defs>
-  
-  <!-- Background -->
-  <rect width="800" height="500" fill="url(#bgGrad5)" rx="12"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 400">
+  <!-- Background: Midnight / Dark Blue -->
+  <rect width="800" height="400" fill="#0D1B2A" rx="0"/>
   
   <!-- Title -->
-  <text x="400" y="35" text-anchor="middle" fill="#e2e8f0" font-family="system-ui" font-size="20" font-weight="600">Solution Architecture: Seven Steps to Intelligence</text>
-  
-  <!-- Step 1: Ingest -->
-  <g transform="translate(40, 60)">
-    <rect x="0" y="0" width="95" height="100" rx="8" fill="#1e293b" stroke="#0ea5e9" stroke-width="2"/>
-    <circle cx="47" cy="25" r="15" fill="#0ea5e920" stroke="#0ea5e9" stroke-width="1"/>
-    <text x="47" y="30" text-anchor="middle" fill="#e2e8f0" font-family="monospace" font-size="12" font-weight="700">1</text>
-    <text x="47" y="55" text-anchor="middle" fill="#0ea5e9" font-family="system-ui" font-size="11" font-weight="600">Ingest</text>
-    <text x="47" y="70" text-anchor="middle" fill="#94a3b8" font-family="system-ui" font-size="8">Land telemetry</text>
-    <text x="47" y="82" text-anchor="middle" fill="#94a3b8" font-family="system-ui" font-size="8">from PI &amp; CygNet</text>
-    <text x="47" y="95" text-anchor="middle" fill="#64748b" font-family="monospace" font-size="7">Snowpipe</text>
-  </g>
-  
-  <line x1="140" y1="110" x2="155" y2="110" stroke="#06b6d4" stroke-width="2" marker-end="url(#flowArrow)"/>
-  
-  <!-- Step 2: Enrich -->
-  <g transform="translate(160, 60)">
-    <rect x="0" y="0" width="95" height="100" rx="8" fill="#1e293b" stroke="#a855f7" stroke-width="2"/>
-    <circle cx="47" cy="25" r="15" fill="#a855f720" stroke="#a855f7" stroke-width="1"/>
-    <text x="47" y="30" text-anchor="middle" fill="#e2e8f0" font-family="monospace" font-size="12" font-weight="700">2</text>
-    <text x="47" y="55" text-anchor="middle" fill="#a855f7" font-family="system-ui" font-size="11" font-weight="600">Enrich</text>
-    <text x="47" y="70" text-anchor="middle" fill="#94a3b8" font-family="system-ui" font-size="8">Parse P&amp;ID PDFs</text>
-    <text x="47" y="82" text-anchor="middle" fill="#94a3b8" font-family="system-ui" font-size="8">extract specs</text>
-    <text x="47" y="95" text-anchor="middle" fill="#64748b" font-family="monospace" font-size="7">Cortex Search</text>
-  </g>
-  
-  <line x1="260" y1="110" x2="275" y2="110" stroke="#06b6d4" stroke-width="2" marker-end="url(#flowArrow)"/>
-  
-  <!-- Step 3: Build Graph -->
-  <g transform="translate(280, 60)">
-    <rect x="0" y="0" width="95" height="100" rx="8" fill="#1e293b" stroke="#22c55e" stroke-width="2"/>
-    <circle cx="47" cy="25" r="15" fill="#22c55e20" stroke="#22c55e" stroke-width="1"/>
-    <text x="47" y="30" text-anchor="middle" fill="#e2e8f0" font-family="monospace" font-size="12" font-weight="700">3</text>
-    <text x="47" y="55" text-anchor="middle" fill="#22c55e" font-family="system-ui" font-size="11" font-weight="600">Build</text>
-    <text x="47" y="70" text-anchor="middle" fill="#94a3b8" font-family="system-ui" font-size="8">Construct graph</text>
-    <text x="47" y="82" text-anchor="middle" fill="#94a3b8" font-family="system-ui" font-size="8">topology</text>
-    <text x="47" y="95" text-anchor="middle" fill="#64748b" font-family="monospace" font-size="7">Snowpark DF</text>
-  </g>
-  
-  <line x1="380" y1="110" x2="395" y2="110" stroke="#06b6d4" stroke-width="2" marker-end="url(#flowArrow)"/>
-  
-  <!-- Step 4: Predict -->
-  <g transform="translate(400, 60)">
-    <rect x="0" y="0" width="95" height="100" rx="8" fill="#1e293b" stroke="#f59e0b" stroke-width="2"/>
-    <circle cx="47" cy="25" r="15" fill="#f59e0b20" stroke="#f59e0b" stroke-width="1"/>
-    <text x="47" y="30" text-anchor="middle" fill="#e2e8f0" font-family="monospace" font-size="12" font-weight="700">4</text>
-    <text x="47" y="55" text-anchor="middle" fill="#f59e0b" font-family="system-ui" font-size="11" font-weight="600">Predict</text>
-    <text x="47" y="70" text-anchor="middle" fill="#94a3b8" font-family="system-ui" font-size="8">Run AutoGL</text>
-    <text x="47" y="82" text-anchor="middle" fill="#94a3b8" font-family="system-ui" font-size="8">link prediction</text>
-    <text x="47" y="95" text-anchor="middle" fill="#64748b" font-family="monospace" font-size="7">Snowpark ML</text>
-  </g>
-  
-  <line x1="500" y1="110" x2="515" y2="110" stroke="#06b6d4" stroke-width="2" marker-end="url(#flowArrow)"/>
-  
-  <!-- Step 5: Score -->
-  <g transform="translate(520, 60)">
-    <rect x="0" y="0" width="95" height="100" rx="8" fill="#1e293b" stroke="#ef4444" stroke-width="2"/>
-    <circle cx="47" cy="25" r="15" fill="#ef444420" stroke="#ef4444" stroke-width="1"/>
-    <text x="47" y="30" text-anchor="middle" fill="#e2e8f0" font-family="monospace" font-size="12" font-weight="700">5</text>
-    <text x="47" y="55" text-anchor="middle" fill="#ef4444" font-family="system-ui" font-size="11" font-weight="600">Score</text>
-    <text x="47" y="70" text-anchor="middle" fill="#94a3b8" font-family="system-ui" font-size="8">Flag assets</text>
-    <text x="47" y="82" text-anchor="middle" fill="#94a3b8" font-family="system-ui" font-size="8">exceeding limits</text>
-    <text x="47" y="95" text-anchor="middle" fill="#64748b" font-family="monospace" font-size="7">Cortex Agent</text>
-  </g>
-  
-  <line x1="620" y1="110" x2="635" y2="110" stroke="#06b6d4" stroke-width="2" marker-end="url(#flowArrow)"/>
-  
-  <!-- Step 6: Simulate -->
-  <g transform="translate(640, 60)">
-    <rect x="0" y="0" width="115" height="100" rx="8" fill="#1e293b" stroke="#06b6d4" stroke-width="2"/>
-    <circle cx="57" cy="25" r="15" fill="#06b6d420" stroke="#06b6d4" stroke-width="1"/>
-    <text x="57" y="30" text-anchor="middle" fill="#e2e8f0" font-family="monospace" font-size="12" font-weight="700">6-7</text>
-    <text x="57" y="55" text-anchor="middle" fill="#06b6d4" font-family="system-ui" font-size="11" font-weight="600">Operate</text>
-    <text x="57" y="70" text-anchor="middle" fill="#94a3b8" font-family="system-ui" font-size="8">Simulate, decide,</text>
-    <text x="57" y="82" text-anchor="middle" fill="#94a3b8" font-family="system-ui" font-size="8">monitor &amp; alert</text>
-    <text x="57" y="95" text-anchor="middle" fill="#64748b" font-family="monospace" font-size="7">Streamlit</text>
-  </g>
-  
-  <!-- Detailed Flow Diagram Below -->
-  <g transform="translate(40, 190)">
-    <!-- Data Sources Row -->
-    <text x="80" y="15" text-anchor="middle" fill="#64748b" font-family="system-ui" font-size="10" font-weight="500">DATA SOURCES</text>
-    
-    <rect x="0" y="25" width="70" height="40" rx="4" fill="#0ea5e920" stroke="#0ea5e9" stroke-width="1"/>
-    <text x="35" y="45" text-anchor="middle" fill="#0ea5e9" font-family="system-ui" font-size="9">OSIsoft PI</text>
-    <text x="35" y="58" text-anchor="middle" fill="#64748b" font-family="system-ui" font-size="7">SnowCore</text>
-    
-    <rect x="80" y="25" width="70" height="40" rx="4" fill="#f43f5e20" stroke="#f43f5e" stroke-width="1"/>
-    <text x="115" y="45" text-anchor="middle" fill="#f43f5e" font-family="system-ui" font-size="9">CygNet</text>
-    <text x="115" y="58" text-anchor="middle" fill="#64748b" font-family="system-ui" font-size="7">TeraField</text>
-    
-    <!-- Arrows down -->
-    <line x1="35" y1="70" x2="35" y2="95" stroke="#06b6d4" stroke-width="1" marker-end="url(#flowArrow)"/>
-    <line x1="115" y1="70" x2="115" y2="95" stroke="#06b6d4" stroke-width="1" marker-end="url(#flowArrow)"/>
-  </g>
-  
-  <!-- Tables Row -->
-  <g transform="translate(40, 295)">
-    <text x="180" y="15" text-anchor="middle" fill="#64748b" font-family="system-ui" font-size="10" font-weight="500">UNIFIED TABLES</text>
-    
-    <rect x="0" y="25" width="90" height="35" rx="4" fill="#29b5e810" stroke="#29b5e8" stroke-width="1"/>
-    <text x="45" y="47" text-anchor="middle" fill="#29b5e8" font-family="monospace" font-size="8">ASSET_MASTER</text>
-    
-    <rect x="100" y="25" width="90" height="35" rx="4" fill="#29b5e810" stroke="#29b5e8" stroke-width="1"/>
-    <text x="145" y="47" text-anchor="middle" fill="#29b5e8" font-family="monospace" font-size="8">NETWORK_EDGES</text>
-    
-    <rect x="200" y="25" width="90" height="35" rx="4" fill="#29b5e810" stroke="#29b5e8" stroke-width="1"/>
-    <text x="245" y="47" text-anchor="middle" fill="#29b5e8" font-family="monospace" font-size="8">SCADA_TELEMETRY</text>
-    
-    <rect x="300" y="25" width="90" height="35" rx="4" fill="#a855f710" stroke="#a855f7" stroke-width="1"/>
-    <text x="345" y="47" text-anchor="middle" fill="#a855f7" font-family="monospace" font-size="8">DOCS_SEARCH</text>
-    
-    <!-- Arrow to AI -->
-    <line x1="200" y1="65" x2="200" y2="95" stroke="#06b6d4" stroke-width="1.5" marker-end="url(#flowArrow)"/>
-  </g>
-  
-  <!-- AI Processing Row -->
-  <g transform="translate(40, 400)">
-    <text x="200" y="15" text-anchor="middle" fill="#64748b" font-family="system-ui" font-size="10" font-weight="500">AI PROCESSING</text>
-    
-    <rect x="0" y="25" width="130" height="50" rx="6" fill="#22c55e10" stroke="#22c55e" stroke-width="1"/>
-    <text x="65" y="45" text-anchor="middle" fill="#22c55e" font-family="system-ui" font-size="10" font-weight="500">🧬 AutoGL GNN</text>
-    <text x="65" y="62" text-anchor="middle" fill="#94a3b8" font-family="system-ui" font-size="8">Link Prediction + Anomaly</text>
-    
-    <rect x="140" y="25" width="130" height="50" rx="6" fill="#a855f710" stroke="#a855f7" stroke-width="1"/>
-    <text x="205" y="45" text-anchor="middle" fill="#a855f7" font-family="system-ui" font-size="10" font-weight="500">🤖 Cortex Agent</text>
-    <text x="205" y="62" text-anchor="middle" fill="#94a3b8" font-family="system-ui" font-size="8">Reasoning + Search</text>
-    
-    <rect x="280" y="25" width="130" height="50" rx="6" fill="#f59e0b10" stroke="#f59e0b" stroke-width="1"/>
-    <text x="345" y="45" text-anchor="middle" fill="#f59e0b" font-family="system-ui" font-size="10" font-weight="500">📊 Command Center</text>
-    <text x="345" y="62" text-anchor="middle" fill="#94a3b8" font-family="system-ui" font-size="8">Visualize + Simulate</text>
-  </g>
-  
-  <!-- Personas Column (Right) -->
-  <g transform="translate(480, 200)">
-    <text x="130" y="15" text-anchor="middle" fill="#64748b" font-family="system-ui" font-size="10" font-weight="500">WHO BENEFITS</text>
-    
-    <rect x="30" y="30" width="200" height="40" rx="6" fill="#1e293b" stroke="#334155" stroke-width="1"/>
-    <text x="45" y="45" fill="#06b6d4" font-family="system-ui" font-size="12">👔</text>
-    <text x="70" y="48" fill="#e2e8f0" font-family="system-ui" font-size="10" font-weight="500">VP Integration</text>
-    <text x="70" y="62" fill="#94a3b8" font-family="system-ui" font-size="8">Synergy tracking dashboard</text>
-    
-    <rect x="30" y="80" width="200" height="40" rx="6" fill="#1e293b" stroke="#334155" stroke-width="1"/>
-    <text x="45" y="95" fill="#22c55e" font-family="system-ui" font-size="12">🎮</text>
-    <text x="70" y="98" fill="#e2e8f0" font-family="system-ui" font-size="10" font-weight="500">ROC Controller</text>
-    <text x="70" y="112" fill="#94a3b8" font-family="system-ui" font-size="8">Simulation before commit</text>
-    
-    <rect x="30" y="130" width="200" height="40" rx="6" fill="#1e293b" stroke="#334155" stroke-width="1"/>
-    <text x="45" y="145" fill="#a855f7" font-family="system-ui" font-size="12">🔧</text>
-    <text x="70" y="148" fill="#e2e8f0" font-family="system-ui" font-size="10" font-weight="500">Facilities Engineer</text>
-    <text x="70" y="162" fill="#94a3b8" font-family="system-ui" font-size="8">Instant P&amp;ID spec lookup</text>
-    
-    <rect x="30" y="180" width="200" height="40" rx="6" fill="#1e293b" stroke="#334155" stroke-width="1"/>
-    <text x="45" y="195" fill="#f59e0b" font-family="system-ui" font-size="12">🛡️</text>
-    <text x="70" y="198" fill="#e2e8f0" font-family="system-ui" font-size="10" font-weight="500">HSE &amp; Maintenance</text>
-    <text x="70" y="212" fill="#94a3b8" font-family="system-ui" font-size="8">Proactive risk alerts</text>
-  </g>
-</svg>
+  <text x="400" y="35" text-anchor="middle" fill="#E2E8F0" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="600">How It Comes Together</text>
 
+  <!-- Step 1 -->
+  <g transform="translate(50, 80)">
+    <circle cx="20" cy="20" r="15" fill="#29B5E8"/>
+    <text x="20" y="25" text-anchor="middle" fill="#0D1B2A" font-weight="bold" font-family="system-ui">1</text>
+    <text x="50" y="25" fill="#E2E8F0" font-weight="600" font-family="system-ui">Ingest &amp; Unify</text>
+    <text x="50" y="45" fill="#94A3B8" font-size="11" font-family="system-ui">Land PI &amp; CygNet data</text>
+    <rect x="50" y="55" width="200" height="60" rx="4" fill="#1E293B" stroke="#29B5E8" stroke-width="1"/>
+    <text x="60" y="80" fill="#29B5E8" font-size="10" font-family="monospace">SCADA_TELEMETRY</text>
+    <text x="60" y="95" fill="#29B5E8" font-size="10" font-family="monospace">ASSET_MASTER</text>
+  </g>
+
+  <!-- Step 2 -->
+  <g transform="translate(50, 220)">
+    <circle cx="20" cy="20" r="15" fill="#A855F7"/>
+    <text x="20" y="25" text-anchor="middle" fill="#FFFFFF" font-weight="bold" font-family="system-ui">2</text>
+    <text x="50" y="25" fill="#E2E8F0" font-weight="600" font-family="system-ui">Enrich with Docs</text>
+    <text x="50" y="45" fill="#94A3B8" font-size="11" font-family="system-ui">Extract specs from PDF P&amp;IDs</text>
+    <rect x="50" y="55" width="200" height="60" rx="4" fill="#1E293B" stroke="#A855F7" stroke-width="1"/>
+    <text x="60" y="80" fill="#A855F7" font-size="10" font-family="monospace">CORTEX SEARCH</text>
+    <text x="60" y="95" fill="#94A3B8" font-size="10" font-family="system-ui">"Find MAWP for V-204"</text>
+  </g>
+
+  <!-- Step 3 & 4 (Graph) -->
+  <g transform="translate(350, 80)">
+    <circle cx="20" cy="20" r="15" fill="#22C55E"/>
+    <text x="20" y="25" text-anchor="middle" fill="#0D1B2A" font-weight="bold" font-family="system-ui">3</text>
+    <text x="50" y="25" fill="#E2E8F0" font-weight="600" font-family="system-ui">Build &amp; Predict Graph</text>
+    <text x="50" y="45" fill="#94A3B8" font-size="11" font-family="system-ui">Discover hidden dependencies</text>
+    <rect x="50" y="55" width="200" height="200" rx="4" fill="#1E293B" stroke="#22C55E" stroke-width="1"/>
+    
+    <!-- Mini Graph Viz -->
+    <circle cx="100" cy="155" r="5" fill="#29B5E8"/>
+    <circle cx="200" cy="155" r="5" fill="#F59E0B"/>
+    <line x1="105" y1="155" x2="195" y2="155" stroke="#A855F7" stroke-width="2" stroke-dasharray="4,2"/>
+    <text x="150" y="145" text-anchor="middle" fill="#A855F7" font-size="10" font-family="system-ui">Predicted Link</text>
+    <text x="70" y="230" fill="#22C55E" font-size="10" font-family="monospace">AutoGL Inference</text>
+  </g>
+
+  <!-- Step 5 & 6 -->
+  <g transform="translate(600, 150)">
+    <circle cx="20" cy="20" r="15" fill="#F59E0B"/>
+    <text x="20" y="25" text-anchor="middle" fill="#0D1B2A" font-weight="bold" font-family="system-ui">5</text>
+    <text x="50" y="25" fill="#E2E8F0" font-weight="600" font-family="system-ui">Simulate &amp; Decide</text>
+    <rect x="10" y="55" width="180" height="80" rx="4" fill="#1E293B" stroke="#F59E0B" stroke-width="1"/>
+    <text x="25" y="80" fill="#F59E0B" font-size="11" font-weight="bold" font-family="system-ui">Streamlit App</text>
+    <text x="25" y="100" fill="#E2E8F0" font-size="10" font-family="system-ui">"Risk Score: 0.92"</text>
+    <text x="25" y="115" fill="#EF4444" font-size="10" font-weight="bold" font-family="system-ui">🚫 BLOCKED</text>
+  </g>
+
+  <!-- Connecting Lines -->
+  <line x1="260" y1="120" x2="380" y2="120" stroke="#64748B" stroke-width="1.5"/>
+  <line x1="260" y1="260" x2="380" y2="200" stroke="#64748B" stroke-width="1.5"/>
+  <line x1="560" y1="180" x2="590" y2="180" stroke="#64748B" stroke-width="1.5"/>
+
+</svg>
