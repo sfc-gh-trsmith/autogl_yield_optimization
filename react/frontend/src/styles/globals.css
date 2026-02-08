@@ -1,0 +1,49 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-slate-950 text-slate-100 antialiased;
+  }
+}
+
+@layer components {
+  .glass-panel {
+    @apply bg-slate-900/80 backdrop-blur-sm border border-slate-700/50 rounded-xl;
+  }
+  
+  .metric-card {
+    @apply glass-panel p-4 hover:border-slate-600/50 transition-all duration-300;
+  }
+  
+  .btn-primary {
+    @apply px-4 py-2 bg-snowcore-600 hover:bg-snowcore-500 text-white rounded-lg 
+           font-medium transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+  
+  .btn-secondary {
+    @apply px-4 py-2 bg-slate-700 hover:bg-slate-600 text-white rounded-lg 
+           font-medium transition-all duration-200 disabled:opacity-50;
+  }
+  
+  .input-field {
+    @apply w-full px-4 py-2 bg-slate-800 border border-slate-700 rounded-lg
+           text-slate-100 placeholder-slate-500 focus:outline-none focus:border-snowcore-500
+           transition-all duration-200;
+  }
+  
+  .risk-indicator {
+    @apply inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-xs font-medium;
+  }
+  
+  .risk-low { @apply bg-risk-low/20 text-risk-low; }
+  .risk-medium { @apply bg-risk-medium/20 text-risk-medium; }
+  .risk-high { @apply bg-risk-high/20 text-risk-high; }
+  .risk-critical { @apply bg-risk-critical/20 text-risk-critical; }
+}
+
+.maplibregl-ctrl-bottom-left,
+.maplibregl-ctrl-bottom-right {
+  display: none;
+}

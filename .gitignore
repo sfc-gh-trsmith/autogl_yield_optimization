@@ -209,3 +209,6 @@ __marimo__/
 # Snowflake CLI generated bundles
 streamlit/output/
 .cursor/
+.snowflake/
+react/.services.pid
+react/logs/*
